@@ -36,7 +36,7 @@
           "descricao": "Como instalar e importar matplotlib; exemplo prático"
         },
         "Laços de Repetição": {
-          "caminho": "turmas/estatistica/aulas/laco_python.html",
+          "caminho": "turmas/estatistica/aulas/lacos_python.html",
           "icone": "07",
           "descricao": "Aula sobre laços for e while"
         }
@@ -93,7 +93,7 @@
           "descricao": "Uma breve introducao à linguagem Python"
         },
         "Laços de Repetição": {
-          "caminho": "turmas/terceirao/aulas/laco_python.html",
+          "caminho": "turmas/terceirao/aulas/lacos_python.html",
           "icone": "04",
           "descricao": "Aula sobre laços for e while"
         }
