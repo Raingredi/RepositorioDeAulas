@@ -8,7 +8,7 @@ on:
 jobs:
   deploy:
     runs-on: ubuntu-latest
-
+    environment: Deploy
     env:
       ACTIONS_STEP_DEBUG: true
 
@@ -46,12 +46,9 @@ jobs:
 
       - name: Converter Markdown para slides HTML com Marp
         run: |
-          echo "Convertendo arquivos .md em ./www para slides HTML"
-          find ./ -name '*.md' -print0 | while IFS= read -r -d '' f; do
-            out="${f%.md}.html"
-            echo "-> $f -> $out"
-            marp "$f" --html --output "$out" || echo "falha ao converter $f"
-          done
+           echo "Convertendo arquivos .md em ./ para slides HTML"
+           marp --input-dir ./ --html
+        shell: bash
 
       - name: Autenticar no GCP
         uses: google-github-actions/auth@v2
