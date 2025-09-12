@@ -490,7 +490,7 @@
     function goBackToTurmas() {
       aulasView.classList.add('hidden'); backBtn.classList.add('hidden');
       turmasView.classList.remove('hidden'); turmasView.classList.add('fade-in');
-      closeActivityModal();
+      closeActivityModal
     }
 
     function initializeQuill() {
@@ -503,7 +503,9 @@
     }
 
     function showActivityModal(atividade) {
+      // Definir a activity atual e garantir que a turma atual represente a origem da atividade
       currentActivityId = atividade.id;
+      if (atividade.turmaId) currentTurma = atividade.turmaId;
       document.getElementById('alunoNome').value = localStorage.getItem('alunoNome') || '';
       document.getElementById('activityModalTitle').textContent = atividade.titulo;
       const frame = document.getElementById('activityContentFrame');
@@ -597,16 +599,33 @@
 
       atividadeForm.addEventListener('submit', async function (e) {
         e.preventDefault();
-        const turmaId = turmasData[currentTurma] ? currentTurma : (() => {
+        // Determina corretamente a atividade e a turma associada
+        let turmaId = null;
+        let atividade = null;
+
+        // Primeiro tenta a turma atualmente selecionada
+        if (currentTurma && turmasData[currentTurma] && turmasData[currentTurma].atividades) {
+          atividade = turmasData[currentTurma].atividades.find(a => a.id === currentActivityId);
+          if (atividade) turmaId = currentTurma;
+        }
+
+        // Se não encontrou, busca globalmente
+        if (!atividade) {
           for (const [tid, turma] of Object.entries(turmasData)) {
-            if (turma.atividades && turma.atividades.find(a => a.id === currentActivityId)) return tid;
+            if (turma.atividades) {
+              const found = turma.atividades.find(a => a.id === currentActivityId);
+              if (found) { atividade = found; turmaId = tid; break; }
+            }
           }
-          return null;
-        })();
+        }
+
+        // Se a própria atividade tem turmaId atribuído (renderAtividades), prioriza isso
+        if (atividade && atividade.turmaId) turmaId = atividade.turmaId;
+
         const turma = turmaId ? turmasData[turmaId] : null;
         if (!turma) { showErrorModal('Erro: Turma não encontrada.'); return; }
-        const atividade = turma.atividades.find(a => a.id === currentActivityId);
         if (!atividade) { showErrorModal('Erro: Não foi possível encontrar os dados da atividade.'); return; }
+
         const alunoNome = document.getElementById('alunoNome').value.trim();
         if (!alunoNome) { showErrorModal('Por favor, preencha seu nome.'); return; }
         if (!quill.getText().trim()) { showErrorModal('Por favor, escreva sua resposta antes de enviar.'); return; }
@@ -617,7 +636,7 @@
             turma: turma.nome,
             from_name: alunoNome,
             tema: atividade.titulo,
-            mensagem: quill.root.innerHTML
+            mensagem: mensagem
           };
 
           await sendEmail(templateParams);
