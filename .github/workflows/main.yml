@@ -73,3 +73,16 @@ jobs:
             ${{ secrets.GCP_INSTANCE_NAME }}:/var/www/html/efg \
             --zone=${{ secrets.GCP_ZONE }} \
             --project=${{ secrets.GCP_PROJECT_ID }}
+      - name: Copiar arquivos para a VM (para /tmp)
+        run: |
+          gcloud compute scp --recurse ./* \
+            ${{ secrets.GCP_INSTANCE_NAME }}:/tmp/deploy \
+            --zone=${{ secrets.GCP_ZONE }} \
+            --project=${{ secrets.GCP_PROJECT_ID }}
+
+      - name: Mover arquivos para /var/www/html/efg
+        run: |
+          gcloud compute ssh ${{ secrets.GCP_INSTANCE_NAME }} \
+            --zone=${{ secrets.GCP_ZONE }} \
+            --project=${{ secrets.GCP_PROJECT_ID }} \
+            --command="sudo cp -r /tmp/deploy/* /var/www/html/efg/"
