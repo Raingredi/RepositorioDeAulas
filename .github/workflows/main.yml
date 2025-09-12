@@ -66,13 +66,7 @@ jobs:
             --zone=${{ secrets.GCP_ZONE }} \
             --project=${{ secrets.GCP_PROJECT_ID }} \
             --command="echo Conexão bem-sucedida"
-
-      - name: Copiar arquivos para a VM
-        run: |
-          gcloud compute scp --recurse ./* \
-            ${{ secrets.GCP_INSTANCE_NAME }}:/var/www/html/efg \
-            --zone=${{ secrets.GCP_ZONE }} \
-            --project=${{ secrets.GCP_PROJECT_ID }}
+            
       - name: Copiar arquivos para a VM (para /tmp)
         run: |
           gcloud compute scp --recurse ./* \
