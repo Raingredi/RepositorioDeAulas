@@ -316,9 +316,18 @@
   </div>
 
   <script src="https://cdn.jsdelivr.net/npm/quill@2.0.3/dist/quill.js"></script>
-  <script>
+  <script type="module">
+    import {
+      showSuccessModal,
+      hideSuccessModal,
+      showErrorModal,
+      hideErrorModal,
+      showLoadingModal,
+      hideLoadingModal
+    } from './global/alert-modals.js';
+    import { initializeEmailService, sendEmail } from './global/mailer.js';
+
     let turmasData = {};
-    let emailConfig = {};
     let currentTurma = null;
     let currentActivityId = null;
     let quill = null;
@@ -342,72 +351,8 @@
     const closeActivityModalBtn = document.getElementById('closeActivityModal');
     const atividadeForm = document.getElementById('atividadeForm');
 
-    const successModal = document.getElementById('successModal');
-    const errorModal = document.getElementById('errorModal');
-    const loadingModal = document.getElementById('loadingModal');
     const successOkBtn = document.getElementById('successOkBtn');
     const errorOkBtn = document.getElementById('errorOkBtn');
-
-    const showSuccessModal = (message = 'Atividade enviada com sucesso!') => {
-      document.getElementById('successModalMessage').textContent = message;
-      successModal.classList.remove('hidden');
-      successModal.classList.add('flex');
-      const modalContent = successModal.querySelector('.modal-content');
-      modalContent.classList.add('modal-enter');
-      setTimeout(() => modalContent.classList.add('modal-enter-active'), 10);
-    };
-    const hideSuccessModal = () => {
-      const modalContent = successModal.querySelector('.modal-content');
-      modalContent.classList.add('modal-exit');
-      modalContent.classList.remove('modal-enter-active');
-      setTimeout(() => {
-        successModal.classList.add('hidden');
-        successModal.classList.remove('flex');
-        modalContent.classList.remove('modal-exit');
-      }, 300);
-    };
-    const showErrorModal = (message = 'Ocorreu um erro ao enviar a atividade.') => {
-      document.getElementById('errorModalMessage').textContent = message;
-      errorModal.classList.remove('hidden');
-      errorModal.classList.add('flex');
-      const modalContent = errorModal.querySelector('.modal-content');
-      modalContent.classList.add('modal-enter');
-      setTimeout(() => modalContent.classList.add('modal-enter-active'), 10);
-    };
-    const hideErrorModal = () => {
-      const modalContent = errorModal.querySelector('.modal-content');
-      modalContent.classList.add('modal-exit');
-      modalContent.classList.remove('modal-enter-active');
-      setTimeout(() => {
-        errorModal.classList.add('hidden');
-        errorModal.classList.remove('flex');
-        modalContent.classList.remove('modal-exit');
-      }, 300);
-    };
-    const showLoadingModal = () => {
-      loadingModal.classList.remove('hidden');
-      loadingModal.classList.add('flex');
-      const modalContent = loadingModal.querySelector('.modal-content');
-      modalContent.classList.add('modal-enter');
-      setTimeout(() => modalContent.classList.add('modal-enter-active'), 10);
-    };
-    const hideLoadingModal = () => {
-      const modalContent = loadingModal.querySelector('.modal-content');
-      modalContent.classList.add('modal-exit');
-      modalContent.classList.remove('modal-enter-active');
-      setTimeout(() => {
-        loadingModal.classList.add('hidden');
-        loadingModal.classList.remove('flex');
-        modalContent.classList.remove('modal-exit');
-      }, 300);
-    };
-
-    const sendEmail = async (templateParams) => {
-      if (!emailConfig.service_id || !emailConfig.template_id) {
-        throw new Error("EmailJS service ID or template ID is not configured.");
-      }
-      return emailjs.send(emailConfig.service_id, emailConfig.template_id, templateParams);
-    };
 
     function renderTurmas() {
       turmasGrid.innerHTML = '';
@@ -690,7 +635,7 @@
         if (!response.ok) throw new Error(`HTTP error! status: ${response.status}`);
         const settings = await response.json();
         turmasData = settings.turmas || {};
-        emailConfig = settings.email || {};
+        let emailConfig = settings.email || {};
         console.debug("🚀 ~ main ~ settings.email (public):", emailConfig);
 
         // Tenta carregar configurações secretas locais (não versionadas). Se existir,
@@ -716,11 +661,12 @@
           console.warn('Failed to load secret.json (this is OK for public deployments):', err);
         }
 
-        // Inicializa EmailJS somente se houver a chave pública (previne erros em repositórios públicos)
+        // Inicializa EmailJS somente se houver configuração válida
         if (emailConfig && emailConfig.public_key) {
-          emailjs.init(emailConfig.public_key);
+          await initializeEmailService(emailConfig);
         } else {
-          console.warn('EmailJS public key not configured. Email sending will be disabled until you add secret.json with your credentials.');
+          console.warn('EmailJS não configurado. O envio de emails estará desabilitado.');
+          showErrorModal('Sistema de envio de emails não configurado. Por favor, contate o administrador.');
         }
 
         renderTurmas(); setupEventListeners();
