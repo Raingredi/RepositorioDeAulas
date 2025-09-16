@@ -101,6 +101,11 @@
           "caminho": "turmas/terceirao/aulas/projeto_enem.html",
           "icone": "05",
           "descricao": "Aula sobre o projeto final do enem"
+        },
+        "Projeto Enem Parte 02": {
+          "caminho": "turmas/terceirao/aulas/backend_basico.html",
+          "icone": "05",
+          "descricao": "Aula de como estruturar o backend"
         }
       },
       "atividades": [
