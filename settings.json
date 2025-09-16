@@ -96,6 +96,11 @@
           "caminho": "turmas/terceirao/aulas/lacos_python.html",
           "icone": "04",
           "descricao": "Aula sobre laços for e while"
+        },
+        "Projeto Enem": {
+          "caminho": "turmas/terceirao/aulas/projeto_enem.html",
+          "icone": "05",
+          "descricao": "Aula sobre o projeto final do enem"
         }
       },
       "atividades": [

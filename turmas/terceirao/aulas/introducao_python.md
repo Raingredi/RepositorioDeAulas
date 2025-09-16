@@ -73,7 +73,63 @@ Imagine que você tenta somar o conteúdo de uma caixa de "Livros" com uma caixa
 
 O Python nos avisa: "Não posso somar texto com número". É como tentar misturar óleo e água. A prevenção é garantir que os tipos de dados sejam compatíveis para a operação que você deseja fazer.
 
+
 ---
+
+## Apresentando Melhor os Resultados: f-strings
+
+Até agora usamos `print()` de forma simples. Mas e quando queremos misturar texto e variáveis de maneira mais clara?
+
+No Python, usamos **f-strings** (strings formatadas):
+
+```python
+nome = "Maria"
+idade = 30
+print(f"Meu nome é {nome} e tenho {idade} anos.")
+```
+
+- O `f` antes das aspas indica uma **f-string**.
+- As variáveis dentro de `{}` são substituídas pelos seus valores.
+- É a forma mais prática de criar mensagens personalizadas.
+
+---
+
+## Convertendo Tipos: str(variavel)
+
+Lembra do erro ao somar texto e número? Uma forma de resolver é **converter o número para texto** com `str()`.
+
+```python
+pontos = 100
+mensagem = "Sua pontuação é: " + str(pontos)
+print(mensagem)
+```
+
+- `str()` transforma o número em texto.  
+- Assim, podemos juntá-lo a outras strings sem erro.
+
+---
+
+## Interatividade: input()
+
+Podemos deixar nossos programas mais interativos usando `input()`.  
+Ele **espera que o usuário digite algo** e guarda o valor em uma variável.
+
+```python
+nome = input("Qual é o seu nome? ")
+print(f"Olá, {nome}! Bem-vindo ao Python.")
+```
+
+⚠️ Importante: o `input()` sempre retorna texto (`str`).  
+Se precisar de um número, é necessário converter:
+
+```python
+idade = int(input("Qual é a sua idade? "))
+print(f"No próximo ano você terá {idade + 1} anos.")
+```
+
+
+---
+
 
 ## Atividade Prática: Calculadora de Compras
 
