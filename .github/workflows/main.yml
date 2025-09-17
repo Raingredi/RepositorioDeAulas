@@ -41,14 +41,21 @@ jobs:
         run: |
           echo "Instalando Node.js, Marp CLI e Mermaid CLI..."
           sudo apt-get update -y
-          sudo apt-get install -y nodejs npm
-          sudo npm install -g @marp-team/marp-cli @mermaid-js/mermaid-cli
+          sudo apt-get install -y nodejs npm 
+          sudo npm install -g @marp-team/marp-cli @marp-team/marpit markdown-it-mermaid markdown-it-mathjax3 markdown-it-attrs markdown-it-container markdown-it-deflist markdown-it-footnote
 
       - name: Converter Markdown para slides HTML com Marp
         run: |
-           echo "Convertendo arquivos .md em ./turmas para slides HTML"
-           marp ./turmas --html
+          echo "Convertendo todos os arquivos .md recursivamente em HTML (no mesmo diretório)..."
+          export NODE_PATH=$(npm root -g)
+          find ./turmas -type f -name "*.md" -print0 | xargs -0 -n1 -I{} sh -c '
+            mdfile="{}"
+            out="${mdfile%.md}.html"
+            echo "Convertendo $mdfile -> $out"
+            marp "$mdfile" --engine ./engine.js -o "$out"
+          '
         shell: bash
+
 
       - name: Autenticar no GCP
         uses: google-github-actions/auth@v2
