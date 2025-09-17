@@ -39,6 +39,11 @@
           "caminho": "turmas/estatistica/aulas/lacos_python.html",
           "icone": "07",
           "descricao": "Aula sobre laços for e while"
+        },
+        "Matplotlib Parte 01": {
+          "caminho": "turmas/estatistica/aulas/matplotlib_parte01.html",
+          "icone": "08",
+          "descricao": "Aula prática sobre Matplotlib"
         }
       },
       "atividades": [
@@ -69,6 +74,13 @@
           "titulo": "Laços de Repetição em Python",
           "descricao": "Atividade sobre for e while",
           "caminho": "turmas/estatistica/atividades/laco_python.html"
+        },
+         {
+          "id": "matplotlib_01",
+          "icone": "08",
+          "titulo": "Matplotlib 01",
+          "descricao": "Atividade prática sobre matplotlib",
+          "caminho": "turmas/estatistica/atividades/matplotlib01.html"
         }
       ]
     },
@@ -104,7 +116,7 @@
         },
         "Projeto Enem Parte 02": {
           "caminho": "turmas/terceirao/aulas/backend_basico.html",
-          "icone": "05",
+          "icone": "06",
           "descricao": "Aula de como estruturar o backend"
         }
       },
@@ -132,5 +144,26 @@
         }
       ]
     }
+  },
+  "logica": {
+    "nome": "Lógica de Programação",
+    "cor": "bg-blue-500",
+    "icone": "code",
+    "aulas": {
+      "Introdução a Lógica de Programação": {
+        "caminho": "turmas/logica/aulas/introducao_algoritmos.html",
+        "icone": "01",
+        "descricao": "Conceitos básicos de lógica de programação"
+      }
+    },
+    "atividades": [
+      {
+        "id": "atv1",
+        "icone": "01",
+        "titulo": "Exercícios de Introdução e Algoritmos",
+        "descricao": "Resolva os exercícios propostos sobre introdução à lógica e algoritmos",
+        "caminho": "turmas/logica/atividades/introducao_algoritmos.html"
+      }
+    ]
   }
 }

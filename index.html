@@ -365,7 +365,7 @@
             <span class="material-icons">arrow_forward</span>
           </div>
           <h3 class="text-xl font-medium mb-2">${turma.nome}</h3>
-          <p class="text-white text-opacity-80">${Object.keys(turma.aulas).length} aulas disponíveis</p>
+          <p class="text-white text-opacity-80">${Object.keys(turma.aulas || {}).length} aulas disponíveis</p>
         `;
         turmaCard.addEventListener('click', () => showPasswordModal(id, turma));
         turmasGrid.appendChild(turmaCard);
@@ -653,7 +653,21 @@
         const response = await fetch('settings.json');
         if (!response.ok) throw new Error(`HTTP error! status: ${response.status}`);
         const settings = await response.json();
-        turmasData = settings.turmas || {};
+        // Monta turmasData automaticamente:
+        // 1) copia settings.turmas (se houver)
+        // 2) mescla quaisquer chaves top-level que pareçam ser turmas (objeto com nome + aulas)
+        turmasData = {};
+        if (settings.turmas && typeof settings.turmas === 'object') {
+          Object.assign(turmasData, settings.turmas);
+        }
+        Object.entries(settings).forEach(([key, val]) => {
+          if (key === 'turmas' || key === 'email' || key === 'logica' /*deprecated compat*/) return;
+          if (val && typeof val === 'object' && val.nome && val.aulas) {
+            if (!turmasData[key]) turmasData[key] = val;
+          }
+        });
+        // Compat: ainda respeita settings.logica caso exista
+        if (settings.logica && !turmasData['logica']) turmasData['logica'] = settings.logica;
         let emailConfig = settings.email || {};
         console.debug("🚀 ~ main ~ settings.email (public):", emailConfig);
 
