@@ -37,25 +37,42 @@ jobs:
       - name: Listar arquivos no diretório
         run: ls -la ./
 
-      - name: Instalar Node.js, Marp CLI e Mermaid CLI
+      - name: Configurar ambiente Node.js e criar package.json
         run: |
           echo "Instalando Node.js, Marp CLI e Mermaid CLI..."
           sudo apt-get update -y
           sudo apt-get install -y nodejs npm 
-          sudo npm install -g @marp-team/marp-cli @marp-team/marpit markdown-it-mermaid markdown-it-mathjax3 markdown-it-attrs markdown-it-container markdown-it-deflist markdown-it-footnote
+          cat <<EOF > package.json
+          {
+            "name": "marp-converter",
+            "version": "1.0.0",
+            "description": "Marp conversion script",
+            "dependencies": {
+              "@marp-team/marp-cli": "^3.4.0",
+              "@marp-team/marpit": "^2.6.2",
+              "markdown-it-attrs": "^4.1.6",
+              "markdown-it-container": "^4.0.0",
+              "markdown-it-deflist": "^3.0.0",
+              "markdown-it-footnote": "^4.0.0",
+              "markdown-it-mathjax3": "^4.3.2",
+              "markdown-it-mermaid": "^0.2.5"
+            }
+          }
+          EOF
+
+      - name: Instalar dependências do Node.js
+        run: npm install
 
       - name: Converter Markdown para slides HTML com Marp
         run: |
-          echo "Convertendo todos os arquivos .md recursivamente em HTML (no mesmo diretório)..."
-          export NODE_PATH=$(npm root -g)
+          echo "Convertendo todos os arquivos .md recursivamente em HTML..."
           find ./turmas -type f -name "*.md" -print0 | xargs -0 -n1 -I{} sh -c '
             mdfile="{}"
-            out="${mdfile%.md}.html"
-            echo "Convertendo $mdfile -> $out"
-            marp "$mdfile" --engine ./engine.js -o "$out"
+            outfile="${mdfile%.md}.html"
+            echo "Convertendo $mdfile -> $outfile"
+            ./node_modules/.bin/marp "$mdfile" --engine ./engine.js -o "$outfile"
           '
         shell: bash
-
 
       - name: Autenticar no GCP
         uses: google-github-actions/auth@v2
