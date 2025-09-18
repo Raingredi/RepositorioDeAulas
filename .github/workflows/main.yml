@@ -37,17 +37,19 @@ jobs:
       - name: Listar arquivos no diretório
         run: ls -la ./
 
-      - name: Instalar Node.js, Marp CLI e Mermaid CLI
+      - name: Instalar Node.js, Marpit e Mermaid CLI
         run: |
-          echo "Instalando Node.js, Marp CLI e Mermaid CLI..."
+          echo "Instalando Node.js, Marpit e Mermaid CLI..."
           sudo apt-get update -y
           sudo apt-get install -y nodejs npm
-          sudo npm install -g @marp-team/marp-cli @mermaid-js/mermaid-cli
+          sudo npm install -g @marp-team/marpit @mermaid-js/mermaid-cli
 
-      - name: Converter Markdown para slides HTML com Marp
+      - name: Converter Markdown para slides HTML com Marpit
         run: |
            echo "Convertendo arquivos .md em ./turmas para slides HTML"
-           marp ./turmas --html
+           for file in ./turmas/*.md; do
+             npx marpit "$file" --html -o "${file%.md}.html"
+           done
         shell: bash
 
       - name: Autenticar no GCP
