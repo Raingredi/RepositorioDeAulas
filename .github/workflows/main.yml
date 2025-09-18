@@ -47,16 +47,16 @@ jobs:
             "name": "marp-converter",
             "version": "1.0.0",
             "description": "Marp conversion script",
-            "dependencies": {
-              "@marp-team/marp-cli": "^3.4.0",
-              "@marp-team/marpit": "^2.6.2",
-              "markdown-it-attrs": "^4.1.6",
-              "markdown-it-container": "^4.0.0",
-              "markdown-it-deflist": "^3.0.0",
-              "markdown-it-footnote": "^4.0.0",
-              "markdown-it-mathjax3": "^4.3.2",
-              "markdown-it-mermaid": "^0.2.5"
-            }
+          "dependencies": {
+            "@marp-team/marp-cli": "^3.4.0",
+            "@marp-team/marpit": "^2.6.1",
+            "markdown-it-attrs": "^4.1.6",
+            "markdown-it-container": "^4.0.0",
+            "markdown-it-deflist": "^3.0.0",
+            "markdown-it-footnote": "^4.0.0",
+            "markdown-it-mathjax3": "^4.3.2",
+            "markdown-it-mermaid": "^0.2.5"
+          }
           }
           EOF
 
