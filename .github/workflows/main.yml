@@ -83,21 +83,22 @@ jobs:
                   text-align: center !important;
                   vertical-align: middle !important;
                 }
-                .nodeLabel > p {
-                  margin: 0px;
-                  padding: 0px;
-                  font-weight: 500;
-                }
-
+                .nodeLabel > p,
                 .edgeLabel > p {
                   margin: 2px;
                   padding: 4px;
                   font-weight: 500;
-                  color: white;
                 }
 
+                .edgeLabel > p {
+                  color: white;
+                }
+          
+                /* Simulate h2 underline style */
                 .label text {
                   font-family: 'Roboto Slab', serif;
+                  text-align: center;
+                  vertical-align: middle;
                 }
                 .clusterLabel text {
                   font-family: 'Roboto Slab', serif;
@@ -106,6 +107,7 @@ jobs:
                   border-bottom: 2px solid #1a3a6e;
                 }
 
+            
                 .node.important rect {
                   stroke: #d62828;
                   fill: #fbecec;
