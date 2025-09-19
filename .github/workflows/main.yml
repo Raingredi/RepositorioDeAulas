@@ -42,7 +42,7 @@ jobs:
         run: |
           set -euo pipefail
 
-          for file in ./turmas/*.md; do
+          for file in $(find ./turmas -type f -name "*.md"); do
             if grep -q "mermaid" "$file"; then
               echo "Processando $file"
               second_delim_line=$(grep -n '^---' "$file" | sed -n '2p' | cut -d: -f1)
