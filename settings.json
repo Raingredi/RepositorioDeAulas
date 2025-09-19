@@ -40,9 +40,14 @@
           "icone": "07",
           "descricao": "Aula sobre laços for e while"
         },
+        "Listas em Python 02": {
+          "caminho": "turmas/estatistica/aulas/listas_parte02.html",
+          "icone": "08",
+          "descricao": "Aula sobre Listas Sort, Zip e For"
+        },
         "Matplotlib Parte 01": {
           "caminho": "turmas/estatistica/aulas/matplotlib_parte01.html",
-          "icone": "08",
+          "icone": "09",
           "descricao": "Aula prática sobre Matplotlib"
         }
       },
@@ -77,7 +82,7 @@
         },
          {
           "id": "matplotlib_01",
-          "icone": "08",
+          "icone": "08-09",
           "titulo": "Matplotlib 01",
           "descricao": "Atividade prática sobre matplotlib",
           "caminho": "turmas/estatistica/atividades/matplotlib01.html"
