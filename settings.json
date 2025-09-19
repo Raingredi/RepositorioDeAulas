@@ -114,10 +114,20 @@
           "icone": "05",
           "descricao": "Aula sobre o projeto final do enem"
         },
-        "Projeto Enem Parte 02": {
-          "caminho": "turmas/terceirao/aulas/backend_basico.html",
+        "Projeto Enem: MySQL - Python": {
+          "caminho": "turmas/terceirao/aulas/projeto_enem_bd_python.html",
           "icone": "06",
-          "descricao": "Aula de como estruturar o backend"
+          "descricao": "Aula de como estruturar o banco de dados e o backend"
+        },
+        "Projeto Enem: JSON": {
+          "caminho": "turmas/terceirao/aulas/projeto_enem_json.html",
+          "icone": "07",
+          "descricao": "Aula de como estruturar o frontend"
+        },
+        "Projeto Enem: Prompts IA": {
+          "caminho": "turmas/terceirao/aulas/projeto_enem_ia.html",
+          "icone": "08",
+          "descricao": "Aula de como fazer bons prompts para a IA"
         }
       },
       "atividades": [
