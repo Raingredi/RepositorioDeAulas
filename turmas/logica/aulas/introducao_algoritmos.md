@@ -1,41 +1,20 @@
 ---
 marp: true
-theme: default
 paginate: true
-style: |
-  @import url('https://fonts.googleapis.com/css2?family=Roboto+Slab:wght@400;700&family=Roboto:ital,wght@0,400;0,700;1,400&display=swap');
-  section {
-    font-family: 'Roboto', sans-serif;
-    background-color: #f4f6fb;
-    color: #2b2b2b;
-    font-size: 28px;
-    line-height: 1.5;
-  }
-  h1, h2, h3 {
-    font-family: 'Roboto Slab', serif;
-    color: #1a3a6e;
-  }
-  h2 {
-    border-bottom: 2px solid #1a3a6e;
-    padding-bottom: 5px;
-  }
-  strong {
-    color: #d62828;
-    font-weight: 700;
-  }
 ---
 
 # Fundamentos da Lógica e Algoritmos
+
 ## Do Pensamento à Execução com Python
 
 ---
 
 ## Objetivos de Aprendizagem
 
-* Entender a **lógica de programação** como a base do pensamento estruturado.
-* Aprender a **representar algoritmos** usando fluxogramas e pseudocódigo.
-* Identificar os **blocos de construção** em Python: variáveis, tipos de dados e operadores.
-* Compreender como as **estruturas de controle** (condicionais e laços) direcionam a execução de um algoritmo.
+- Entender a **lógica de programação** como a base do pensamento estruturado.
+- Aprender a **representar algoritmos** usando fluxogramas e pseudocódigo.
+- Identificar os **blocos de construção** em Python: variáveis, tipos de dados e operadores.
+- Compreender como as **estruturas de controle** (condicionais e laços) direcionam a execução de um algoritmo.
 
 ---
 
@@ -52,6 +31,7 @@ A **lógica de programação** é a arte de escrever essa receita (o algoritmo) 
 É a materialização da lógica: uma sequência **finita** e **precisa** de passos projetada para resolver um problema [1].
 
 Todo algoritmo é composto por três elementos essenciais [1]:
+
 1.  **Entrada**: Os dados a serem processados.
 2.  **Processamento**: As instruções a serem executadas.
 3.  **Saída**: O resultado gerado.
@@ -73,7 +53,6 @@ Para isso, usamos duas ferramentas principais: **Fluxogramas** e **Pseudocódigo
 O fluxograma é uma **representação gráfica** de um algoritmo. Ele usa símbolos padronizados para visualizar o fluxo de execução, tornando a lógica de decisões e repetições muito mais intuitiva [1].
 
 <div class="mermaid">
-%%{init: {'theme': 'base', 'themeVariables': { 'primaryColor': '#f4f6fb', 'lineColor': '#1a3a6e', 'textColor': '#2b2b2b'}}}%%
 graph LR;
   A([Início]) --> B[/Entrada de Dados/];
   B --> C{Decisão};
@@ -104,9 +83,11 @@ inicio
   fimse
 fimalgoritmo
 ```
+
 ---
 
 ## Do Pseudocódigo ao Python (continuação)
+
 ```python
 # Exemplo de Lógica em Python
 nota1 = float(input("Digite a primeira nota: "))
@@ -136,10 +117,10 @@ Para que um algoritmo manipule informações, ele precisa de um lugar para guard
 
 Definir o tipo de um dado informa ao computador quanto espaço alocar e quais operações são válidas para ele [1].
 
-* **Inteiro (`int`)**: Para números inteiros, sem casas decimais (ex: idade, quantidade) [1].
-* **Real (`float`)**: Para números com casas decimais (ex: preço, altura, temperatura) [1].
-* **Cadeia (`str`)**: Para dados textuais (ex: 'A', "Olá, Mundo!") [1].
-* **Lógico (`bool`)**: Armazena apenas dois valores: **True** ou **False**. É a base para a tomada de decisões [1].
+- **Inteiro (`int`)**: Para números inteiros, sem casas decimais (ex: idade, quantidade) [1].
+- **Real (`float`)**: Para números com casas decimais (ex: preço, altura, temperatura) [1].
+- **Cadeia (`str`)**: Para dados textuais (ex: 'A', "Olá, Mundo!") [1].
+- **Lógico (`bool`)**: Armazena apenas dois valores: **True** ou **False**. É a base para a tomada de decisões [1].
 
 ---
 
@@ -147,12 +128,12 @@ Definir o tipo de um dado informa ao computador quanto espaço alocar e quais op
 
 Operadores são símbolos que executam operações sobre os dados (operandos) [1].
 
-* **Aritméticos**: Realizam cálculos matemáticos.
-    `+`, `-`, `*`, `/`, `**` (potência), `%` (módulo) [1].
-* **Relacionais**: Comparam dois valores, e o resultado é sempre um valor **Lógico** (True/False) [1].
-    `==` (igual), `!=` (diferente), `>` (maior que), `<` (menor que) [1].
-* **Lógicos**: Combinam ou invertem expressões lógicas [1].
-    `and`, `or`, `not` [1].
+- **Aritméticos**: Realizam cálculos matemáticos.
+  `+`, `-`, `*`, `/`, `**` (potência), `%` (módulo) [1].
+- **Relacionais**: Comparam dois valores, e o resultado é sempre um valor **Lógico** (True/False) [1].
+  `==` (igual), `!=` (diferente), `>` (maior que), `<` (menor que) [1].
+- **Lógicos**: Combinam ou invertem expressões lógicas [1].
+  `and`, `or`, `not` [1].
 
 ---
 
@@ -170,8 +151,8 @@ As **estruturas de controle** são os mecanismos que nos permitem criar fluxos d
 
 Permitem que um programa escolha entre diferentes caminhos de execução com base em uma condição **booleana** (True ou False) [1].
 
-* **if**: Executa um bloco de código **apenas se** a condição for VERDADEIRA. Se for FALSA, o bloco é ignorado [1].
-* **if-else**: Oferece dois caminhos. Se a condição for VERDADEIRA, executa o bloco do `if`. Se for FALSA, executa o bloco do `else`. Garante que um dos dois caminhos será sempre seguido [1].
+- **if**: Executa um bloco de código **apenas se** a condição for VERDADEIRA. Se for FALSA, o bloco é ignorado [1].
+- **if-else**: Oferece dois caminhos. Se a condição for VERDADEIRA, executa o bloco do `if`. Se for FALSA, executa o bloco do `else`. Garante que um dos dois caminhos será sempre seguido [1].
 
 ---
 
@@ -179,21 +160,21 @@ Permitem que um programa escolha entre diferentes caminhos de execução com bas
 
 São usadas para executar um mesmo bloco de código várias vezes, evitando redundância [1].
 
-* **while**: Um laço de **pré-teste**. A condição é verificada **antes** de cada execução. O bloco só executa **enquanto** a condição for VERDADEIRA. Pode nunca executar [1].
-* **for**: Um laço **controlado por um iterável** (como uma lista ou um intervalo). Ideal para quando se quer percorrer uma sequência de elementos [1].
-* **while com break**: Uma forma de simular um laço de **pós-teste** (do-while), garantindo que o código execute **pelo menos uma vez** [1].
+- **while**: Um laço de **pré-teste**. A condição é verificada **antes** de cada execução. O bloco só executa **enquanto** a condição for VERDADEIRA. Pode nunca executar [1].
+- **for**: Um laço **controlado por um iterável** (como uma lista ou um intervalo). Ideal para quando se quer percorrer uma sequência de elementos [1].
+- **while com break**: Uma forma de simular um laço de **pós-teste** (do-while), garantindo que o código execute **pelo menos uma vez** [1].
 
 ---
 
 ## Qual Laço Usar? Um Guia Rápido
 
-| Característica | **for** | **while** |
-| :--- | :--- | :--- |
-| **Caso de Uso** | Percorrer uma sequência **finita e conhecida** de elementos. | Repetir enquanto uma condição for **verdadeira** (nº de vezes pode ser desconhecido). |
-| **Estrutura Típica** | `for item in sequencia:` | `while condicao:` |
-| **Execução Mínima** | 0 vezes. | 0 vezes. |
+| Característica       | **for**                                                      | **while**                                                                             |
+| :------------------- | :----------------------------------------------------------- | :------------------------------------------------------------------------------------ |
+| **Caso de Uso**      | Percorrer uma sequência **finita e conhecida** de elementos. | Repetir enquanto uma condição for **verdadeira** (nº de vezes pode ser desconhecido). |
+| **Estrutura Típica** | `for item in sequencia:`                                     | `while condicao:`                                                                     |
+| **Execução Mínima**  | 0 vezes.                                                     | 0 vezes.                                                                              |
 
-*Nota: Para garantir a execução ao menos uma vez (lógica do-while), usa-se `while True:` com uma condição de `break` dentro do laço.*
+_Nota: Para garantir a execução ao menos uma vez (lógica do-while), usa-se `while True:` com uma condição de `break` dentro do laço._
 
 ---
 
@@ -202,12 +183,15 @@ São usadas para executar um mesmo bloco de código várias vezes, evitando redu
 Analise o código Python abaixo, que calcula a média de 3 notas e exibe o status do aluno.
 
 **Identifique:**
+
 1.  Quais são as **variáveis** e seus prováveis tipos?
 2.  Quais **operadores** (aritméticos e relacionais) foram usados?
 3.  Qual **estrutura condicional** foi aplicada para tomar a decisão?
 
 ---
+
 ## Atividade Prática: Desvendando o Código Python (continuação)
+
 ```python
 nome_aluno = input("Digite o nome do aluno: ")
 nota1 = float(input("Digite a primeira nota: "))
@@ -230,10 +214,10 @@ else:
 
 Programar é a arte de compor esses componentes fundamentais:
 
-* Primeiro, planejamos a solução com **fluxogramas** e **pseudocódigo**.
-* Em seguida, usamos **variáveis** e **tipos de dados** para armazenar e classificar informações.
-* Com **operadores**, manipulamos esses dados.
-* Finalmente, com **estruturas de controle**, orquestramos o fluxo de execução para tomar decisões e repetir tarefas.
+- Primeiro, planejamos a solução com **fluxogramas** e **pseudocódigo**.
+- Em seguida, usamos **variáveis** e **tipos de dados** para armazenar e classificar informações.
+- Com **operadores**, manipulamos esses dados.
+- Finalmente, com **estruturas de controle**, orquestramos o fluxo de execução para tomar decisões e repetir tarefas.
 
 Dominar esses princípios é a verdadeira marca de um programador proficiente, independentemente da linguagem [1].
 
@@ -241,13 +225,13 @@ Dominar esses princípios é a verdadeira marca de um programador proficiente, i
 
 ## Material Complementar
 
-* **Documentação Oficial do Python sobre Estruturas de Controle:**
-    Para aprofundar, explore como a lógica se traduz em comandos como `if`, `for` e `while`.
-    *https://docs.python.org/pt-br/3/tutorial/controlflow.html*
+- **Documentação Oficial do Python sobre Estruturas de Controle:**
+  Para aprofundar, explore como a lógica se traduz em comandos como `if`, `for` e `while`.
+  *https://docs.python.org/pt-br/3/tutorial/controlflow.html*
 
-* **Curso de Lógica de Programação - Gustavo Guanabara:**
-    Uma série de vídeos didáticos e gratuitos que cobrem todos esses fundamentos com exemplos práticos.
-    *https://www.youtube.com/playlist?list=PLHz_AreHm4dmSj0MHol_aoNYCSGFqvfXV*
+- **Curso de Lógica de Programação - Gustavo Guanabara:**
+  Uma série de vídeos didáticos e gratuitos que cobrem todos esses fundamentos com exemplos práticos.
+  *https://www.youtube.com/playlist?list=PLHz_AreHm4dmSj0MHol_aoNYCSGFqvfXV*
 
 ---
 

@@ -37,20 +37,109 @@ jobs:
       - name: Listar arquivos no diretório
         run: ls -la ./
 
-      # ---------- 1. Compilar com Marp ----------
-      - name: Instalar Node.js e Marp CLI
+      # ---------- 0. Pré-processar Markdown para Mermaid ----------
+      - name: Injetar Mermaid nos arquivos Markdown
         run: |
-          echo "Instalando Node.js e Marp CLI..."
+          for file in ./turmas/*.md; do
+            if grep -q "mermaid" "$file"; then
+              echo "Processando $file"
+              second_delim_line=$(grep -n '^---' "$file" | sed -n '2p' | cut -d: -f1)
+              if [ -n "$second_delim_line" ]; then
+                tmp_file=$(mktemp)
+                head -n "$second_delim_line" "$file" > "$tmp_file"
+                cat <<'EOF' >> "$tmp_file"
+
+                <!-- Include mermaid support -->
+                <script type="module">
+                  import mermaid from 'https://cdn.jsdelivr.net/npm/mermaid@11/dist/mermaid.esm.min.mjs';
+                  mermaid.initialize({ 
+                    startOnLoad: true,
+                    theme: 'base',
+                    themeVariables: {
+                      primaryColor: '#f4f6fb',
+                      primaryTextColor: '#2b2b2b',
+                      primaryBorderColor: '#1a3a6e',
+
+                      lineColor: '#1a3a6e',
+                      secondaryColor: '#e8ebf7',
+                      tertiaryColor: '#d62828',
+
+                      fontFamily: 'Roboto, sans-serif',
+                      fontSize: '16px',
+                      edgeLabelBackground: '#afbae3',
+
+                      nodeTextColor: '#2b2b2b',
+                      clusterBkg: '#f4f6fb',
+                      clusterBorder: '#1a3a6e',
+
+                      titleColor: '#1a3a6e',
+                      sectionBkgColor: '#e8ebf7',
+                      sectionBkgColor2: '#f4f6fb'
+                    },
+                    themeCSS: `
+                      .nodeLabel {
+                        font-family: 'Roboto', sans-serif;
+                        text-align: center !important;
+                        vertical-align: middle !important;
+                      }
+                      .nodeLabel > p {
+                        margin: 0px;
+                        padding: 0px;
+                        font-weight: 500;
+                      }
+
+                      .edgeLabel > p {
+                        margin: 2px;
+                        padding: 4px;
+                        font-weight: 500;
+                        color: white;
+                      }
+
+                      .label text {
+                        font-family: 'Roboto Slab', serif;
+                      }
+                      .clusterLabel text {
+                        font-family: 'Roboto Slab', serif;
+                        fill: #1a3a6e;
+                        font-weight: bold;
+                        border-bottom: 2px solid #1a3a6e;
+                      }
+
+                      .node.important rect {
+                        stroke: #d62828;
+                        fill: #fbecec;
+                      }
+                    `
+                  });
+                </script>
+
+                EOF
+                tail -n +"$((second_delim_line + 1))" "$file" >> "$tmp_file"
+                mv "$tmp_file" "$file"
+                echo "Script do Mermaid injetado em $file"
+              else
+                echo "Arquivo $file não possui segundo '---', pulando..."
+              fi
+            else
+              echo "Arquivo $file não contém 'mermaid', pulando..."
+            fi
+          done
+        shell: bash
+
+      # ---------- 1. Compilar com Marp via NPX ----------
+      - name: Instalar dependências Node.js
+        run: |
+          echo "Instalando Node.js..."
           sudo apt-get update -y
           sudo apt-get install -y nodejs npm
-          sudo npm install -g @marp-team/marp-cli
 
       - name: Converter Markdown para slides HTML com Marp
         run: |
-           echo "Convertendo arquivos .md em ./ para slides HTML"
-           marp --input-dir ./ --html
+          echo "Convertendo arquivos .md em ./turmas para slides HTML com tema ./global/slide.css"
+          npx @marp-team/marp-cli ./turmas --html --theme ./global/slide.css --allow-local-files 
         shell: bash
 
+      # ---------- 2. Deploy para GCP ----------
       - name: Autenticar no GCP
         uses: google-github-actions/auth@v2
         with:
