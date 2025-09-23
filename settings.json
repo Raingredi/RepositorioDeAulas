@@ -133,6 +133,11 @@
           "caminho": "turmas/terceirao/aulas/projeto_enem_ia.html",
           "icone": "08",
           "descricao": "Aula de como fazer bons prompts para a IA"
+        },
+        "Banco de Dados Parte 02": {
+          "caminho": "turmas/terceirao/aulas/banco_de_dados_parte02.html",
+          "icone": "08",
+          "descricao": "Aula de como gerar relacionamentos basicos em Mysql"
         }
       },
       "atividades": [
@@ -156,6 +161,34 @@
           "titulo": "Laços de Repetição em Python",
           "descricao": "Atividade sobre for e while",
           "caminho": "turmas/terceirao/atividades/laco_python.html"
+        },
+        {
+          "id": "ENEM_IA",
+          "icone": "06-09",
+          "titulo": "Projeto ENEM: Equipe Gekko",
+          "descricao": "Instruções da equipe IA para o Projeto ENEM",
+          "caminho": "turmas/terceirao/atividades/ENEM_IA.html"
+        },
+        {
+          "id": "ENEM_PYTHON",
+          "icone": "06-09",
+          "titulo": "Projeto ENEM: Equipe Asuma",
+          "descricao": "Instruções da equipe Python para o Projeto ENEM",
+          "caminho": "turmas/terceirao/atividades/ENEM_PYTHON.html"
+        },
+        {
+          "id": "ENEM_SQL",
+          "icone": "06-09",
+          "titulo": "Projeto ENEM: Equipe Iruka",
+          "descricao": "Instruções da equipe SQL para o Projeto ENEM",
+          "caminho": "turmas/terceirao/atividades/ENEM_SQL.html"
+        },
+        {
+          "id": "ENEM_JSON",
+          "icone": "06-09",
+          "titulo": "Projeto ENEM: Equipe Anko",
+          "descricao": "Instruções da equipe JSON para o Projeto ENEM",
+          "caminho": "turmas/terceirao/atividades/ENEM_JSON.html"
         }
       ]
     }
