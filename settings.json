@@ -203,10 +203,15 @@
         "icone": "01",
         "descricao": "Conceitos básicos de lógica de programação"
       },
-      "Lógica de Programação:  Tabela-Verdade": {
+      "Lógica de Programação: Tabela-Verdade": {
         "caminho": "turmas/logica/aulas/tabela_verdade.html",
-        "icone": "01",
-        "descricao": "Conceitos básicos de lógica de programação"
+        "icone": "02",
+        "descricao": "Conceitos básicos de lógica condicional"
+      },
+      "Lógica de Programação: Tabela-Verdade 02": {
+        "caminho": "turmas/logica/aulas/se_entao.html",
+        "icone": "03",
+        "descricao": "Conceitos básicos de lógica condicional: Se... Então..."
       }
     },
     "atividades": [
@@ -218,11 +223,18 @@
         "caminho": "turmas/logica/atividades/introducao_algoritmos.html"
       },
       {
-        "id": "atv1",
+        "id": "atv2",
         "icone": "02",
         "titulo": "Exercícios de Introdução Tabela Verdade",
-        "descricao": "Resolva os exercícios propostos sobre Tabela Verdade em Python",
+        "descricao": "Resolva os exercícios propostos sobre Tabela Verdade",
         "caminho": "turmas/logica/atividades/tabela_verdade.html"
+      },
+      {
+        "id": "atv3",
+        "icone": "03",
+        "titulo": "Exercícios de Introdução Tabela Verdade 02",
+        "descricao": "Resolva os exercícios propostos sobre Tabela Verdade: Se então",
+        "caminho": "turmas/logica/atividades/se_entao.html"
       }
     ]
   }
