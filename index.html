@@ -650,7 +650,7 @@
     async function main() {
       try {
         // Carrega configurações públicas (sempre versionadas no repo)
-        const response = await fetch('settings.json');
+        const response = await fetch(`settings.json?nocache=${Date.now()}`, { cache: 'no-store' });
         if (!response.ok) throw new Error(`HTTP error! status: ${response.status}`);
         const settings = await response.json();
         // Monta turmasData automaticamente:
