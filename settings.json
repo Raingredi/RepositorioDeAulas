@@ -198,8 +198,13 @@
     "cor": "bg-blue-500",
     "icone": "code",
     "aulas": {
-      "Introdução a Lógica de Programação": {
+      "Lógica de Programação: Algoritmos": {
         "caminho": "turmas/logica/aulas/introducao_algoritmos.html",
+        "icone": "01",
+        "descricao": "Conceitos básicos de lógica de programação"
+      },
+      "Lógica de Programação:  Tabela-Verdade": {
+        "caminho": "turmas/logica/aulas/tabela_verdade.html",
         "icone": "01",
         "descricao": "Conceitos básicos de lógica de programação"
       }
@@ -211,6 +216,13 @@
         "titulo": "Exercícios de Introdução e Algoritmos",
         "descricao": "Resolva os exercícios propostos sobre introdução à lógica e algoritmos",
         "caminho": "turmas/logica/atividades/introducao_algoritmos.html"
+      },
+      {
+        "id": "atv1",
+        "icone": "02",
+        "titulo": "Exercícios de Introdução Tabela Verdade",
+        "descricao": "Resolva os exercícios propostos sobre Tabela Verdade em Python",
+        "caminho": "turmas/logica/atividades/tabela_verdade.html"
       }
     ]
   }
