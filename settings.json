@@ -49,6 +49,11 @@
           "caminho": "turmas/estatistica/aulas/matplotlib_parte01.html",
           "icone": "09",
           "descricao": "Aula prática sobre Matplotlib"
+        },
+        "Matplotlib Parte 02": {
+          "caminho": "turmas/estatistica/aulas/matplotlib_parte02.html",
+          "icone": "09",
+          "descricao": "Aula prática sobre Matplotlib, segunda parte."
         }
       },
       "atividades": [
