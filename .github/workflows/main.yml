@@ -30,6 +30,7 @@ jobs:
               "estatistica": { "senha": "${{ secrets.SENHA_EST }}" },
               "terceirao": { "senha": "${{ secrets.SENHA_TERCEIRAO }}" },
               "logica": { "senha": "${{ secrets.SENHA_LOGICA }}" }
+              "visualizacao_dados": { "senha": "${{ secrets.SENHA_VISUALIZACAO_DADOS }}" }
             }
           }
           EOF

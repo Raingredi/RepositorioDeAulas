@@ -237,5 +237,43 @@
         "caminho": "turmas/logica/atividades/se_entao.html"
       }
     ]
+  },
+  "visualizacao_dados": {
+    "nome": "Visualização de Dados",
+    "cor": "bg-green-500",
+    "icone": "bar_chart",
+    "aulas": {
+      "Laços de Repetição": {
+        "caminho": "turmas/visualizacao_dados/aulas/lacos_python.html",
+        "icone": "01",
+        "descricao": "Conceitos fundamentais de laços for e while em Python"
+      },
+      "Listas em Python": {
+        "caminho": "turmas/visualizacao_dados/aulas/vetores_array.html",
+        "icone": "02",
+        "descricao": "Conceitos e exemplos de listas em Python"
+      },
+      "Listas em Python 02": {
+        "caminho": "turmas/visualizacao_dados/aulas/listas_parte02.html",
+        "icone": "03",
+        "descricao": "Aula sobre Listas Sort, Zip e For"
+      }
+    },
+    "atividades": [
+      {
+        "id": "lacos_python",
+        "icone": "01",
+        "titulo": "Laços de Repetição em Python",
+        "descricao": "Atividade prática sobre laços for e while",
+        "caminho": "turmas/visualizacao_dados/atividades/laco_python.html"
+      },
+      {
+        "id": "listas_python",
+        "icone": "02-03",
+        "titulo": "Listas e Estruturas de Dados em Python",
+        "descricao": "Exercícios sobre listas, vetores e manipulação de dados",
+        "caminho": "turmas/visualizacao_dados/atividades/try_libs_python.html"
+      }
+    ]
   }
 }
