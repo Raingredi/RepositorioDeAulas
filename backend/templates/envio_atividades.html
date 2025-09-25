@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            line-height: 1.6;
+            color: #333;
+        }
+        .container {
+            width: 90%;
+            max-width: 600px;
+            margin: 20px auto;
+            padding: 20px;
+            border: 1px solid #ddd;
+            border-radius: 8px;
+            background-color: #f9f9f9;
+        }
+        .header {
+            font-size: 24px;
+            font-weight: bold;
+            color: #2a64c4;
+            border-bottom: 2px solid #eee;
+            padding-bottom: 10px;
+            margin-bottom: 20px;
+        }
+        .field-label {
+            font-weight: bold;
+            color: #555;
+        }
+        .field-value {
+            margin-left: 10px;
+            color: #333;
+        }
+        .message-box {
+            background-color: #fff;
+            border: 1px solid #ddd;
+            padding: 15px;
+            border-radius: 5px;
+            margin-top: 5px;
+            white-space: pre-wrap; /* Mantém a formatação do texto */
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            Nova Atividade Enviada
+        </div>
+        <p><span class="field-label">Turma:</span> <span class="field-value">{{turma}}</span></p>
+        <p><span class="field-label">Aluno(a):</span> <span class="field-value">{{from_name}}</span></p>
+        <p><span class="field-label">Tema da Aula:</span> <span class="field-value">{{tema}}</span></p>
+       
+        
+        <p class="field-label">Mensagem:</p>
+        <div class="message-box">
+            {{mensagem}}
+        </div>
+    </div>
+</body>
+</html>

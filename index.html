@@ -6,7 +6,6 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Repositório de Aulas</title>
   <script src="https://cdn.tailwindcss.com"></script>
-  <script src="https://cdn.jsdelivr.net/npm/@emailjs/browser@3/dist/email.min.js"></script>
   <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
   <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@300;400;500;700&display=swap" rel="stylesheet">
   <link href="https://cdn.jsdelivr.net/npm/quill@2.0.3/dist/quill.snow.css" rel="stylesheet" />
@@ -325,12 +324,13 @@
       showLoadingModal,
       hideLoadingModal
     } from './global/alert-modals.js';
-    import { initializeEmailService, sendEmail } from './global/mailer.js';
+    import EmailSender from './global/mailer.js';
 
     let turmasData = {};
     let currentTurma = null;
     let currentActivityId = null;
     let quill = null;
+    let emailSender = null;
 
     const turmasView = document.getElementById('turmasView');
     const aulasView = document.getElementById('aulasView');
@@ -632,17 +632,16 @@
         const mensagem = quill.root.innerHTML;
         showLoadingModal();
         try {
-          const templateParams = {
-            turma: turma.nome,
-            from_name: alunoNome,
-            tema: atividade.titulo,
-            mensagem: mensagem
-          };
-
-          await sendEmail(templateParams);
+          await emailSender.sendAtividadeEmail(
+            "professor@escola.com", // Destinatário - será configurado no backend
+            turma.nome,
+            alunoNome,
+            atividade.titulo,
+            mensagem
+          );
           localStorage.removeItem(`draft_${atividade.id}`);
           closeActivityModal(); showSuccessModal('Atividade enviada com sucesso!');
-        } catch (error) { console.error('Erro ao enviar atividade:', error); showErrorModal(`Ocorreu um erro ao enviar a atividade: ${error.text || error.message || 'Erro desconhecido'}`); }
+        } catch (error) { console.error('Erro ao enviar atividade:', error); showErrorModal(`Ocorreu um erro ao enviar a atividade: ${error.message || 'Erro desconhecido'}`); }
         finally { hideLoadingModal(); }
       });
     }
@@ -694,13 +693,9 @@
           console.warn('Failed to load secret.json (this is OK for public deployments):', err);
         }
 
-        // Inicializa EmailJS somente se houver configuração válida
-        if (emailConfig && emailConfig.public_key) {
-          await initializeEmailService(emailConfig);
-        } else {
-          console.warn('EmailJS não configurado. O envio de emails estará desabilitado.');
-          showErrorModal('Sistema de envio de emails não configurado. Por favor, contate o administrador.');
-        }
+        // Inicializa o serviço de email usando API Rust (backend rodando no Docker)
+        emailSender = new EmailSender();
+        console.log('Email service initialized successfully.');
 
         renderTurmas(); setupEventListeners();
       } catch (error) {
