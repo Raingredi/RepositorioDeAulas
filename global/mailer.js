@@ -13,13 +13,13 @@ class EmailSender {
     constructor(apiUrl = null) {
         // Tenta detectar automaticamente a URL da API
         if (!apiUrl) {
-            // Se estamos no mesmo domínio, usa caminho relativo
+            // API sempre roda na porta 8080, independente do domínio
             if (window.location.hostname === 'localhost') {
-                // Para desenvolvimento local com nginx + API separada
+                // Desenvolvimento local
                 this.apiUrl = 'http://localhost:8080';
             } else {
-                // Para produção ou mesmo domínio
-                this.apiUrl = window.location.origin;
+                // Produção - usa o mesmo domínio mas porta 8080
+                this.apiUrl = window.location.protocol + '//' + window.location.hostname + ':8080';
             }
         } else {
             this.apiUrl = apiUrl;
