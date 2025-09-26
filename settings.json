@@ -143,6 +143,11 @@
           "caminho": "turmas/terceirao/aulas/banco_de_dados_parte02.html",
           "icone": "08",
           "descricao": "Aula de como gerar relacionamentos basicos em Mysql"
+        },
+        "Projeto Enem: Melhorias": {
+          "caminho": "turmas/terceirao/aulas/refinamentosEnem.html",
+          "icone": "09",
+          "descricao": "Aula de segestões para melhorar o projeto ENEM"
         }
       },
       "atividades": [
