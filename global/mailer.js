@@ -13,22 +13,26 @@ class EmailSender {
     constructor(apiUrl = null) {
         // Tenta detectar automaticamente a URL da API
         if (!apiUrl) {
-            // API sempre roda na porta 8080, independente do domínio
+            // API sempre roda na mesma origem (porta padrão), independente do domínio
             if (window.location.hostname === 'localhost') {
                 // Desenvolvimento local
                 this.apiUrl = 'http://localhost:8080';
             } else {
-                // Produção - usa o mesmo domínio mas porta 8080
-                this.apiUrl = window.location.protocol + '//' + window.location.hostname + ':8080';
+                // Produção - usa o mesmo domínio sem especificar porta (nginx proxy)
+                this.apiUrl = window.location.protocol + '//' + window.location.hostname;
             }
         } else {
             this.apiUrl = apiUrl;
         }
         this.endpoint = '/send-mail';
+
+        // Instância do fallback EmailJS
+        this.fallbackService = new EmailJSFallback();
+        this.fallbackEnabled = true;
     }
 
     /**
-     * Envia um email usando a API
+     * Envia um email usando a API com fallback para EmailJS
      *
      * @param {Object} options - Opções do email
      * @param {string} options.to - Email do destinatário (obrigatório)
@@ -39,77 +43,112 @@ class EmailSender {
      * @returns {Promise<Object>} Resultado do envio
      */
     async sendEmail(options = {}) {
-        try {
-            // Validação básica
-            if (!options.to) {
-                throw new Error('Destinatário (to) é obrigatório');
-            }
-            if (!options.subject) {
-                throw new Error('Assunto (subject) é obrigatório');
-            }
-
-            // Preparar payload
-            const payload = {
-                to: options.to,
-                subject: options.subject,
-                template: options.template || 'default.txt',
-                variables: options.variables || {}
-            };
-
-            // Se não usar template, usar o corpo direto
-            if (!options.template && options.body) {
-                payload.template = 'default.txt';
-                payload.variables = { body: options.body };
-            }
-
-            // Fazer requisição
-            const response = await fetch(`${this.apiUrl}${this.endpoint}`, {
-                method: 'POST',
-                headers: {
-                    'Content-Type': 'application/json',
-                },
-                body: JSON.stringify(payload)
-            });
-
-            const result = await response.json();
-
-            if (!response.ok) {
-                throw new Error(result.message || 'Erro na requisição');
-            }
-
-            return {
-                success: true,
-                message: result.message,
-                data: result
-            };
-
-        } catch (error) {
-            console.error('Erro ao enviar email:', error);
-
-            // Verifica se é erro de conexão
-            if (error.name === 'TypeError' && error.message.includes('fetch')) {
-                return {
-                    success: false,
-                    message: 'Erro de conexão com o servidor. Verifique se a API está rodando.',
-                    error: error
-                };
-            }
-
-            // Verifica se é erro de resposta HTTP
-            if (error.message.includes('HTTP')) {
-                return {
-                    success: false,
-                    message: `Erro do servidor: ${error.message}`,
-                    error: error
-                };
-            }
-
-            return {
-                success: false,
-                message: error.message || 'Erro desconhecido ao enviar email',
-                error: error
-            };
+        // Validação básica
+        if (!options.to) {
+            throw new Error('Destinatário (to) é obrigatório');
         }
+        if (!options.subject) {
+            throw new Error('Assunto (subject) é obrigatório');
+        }
+
+        // Tentar primeiro o serviço principal (Rust) com timeout
+        try {
+            const result = await this._tryPrimaryService(options);
+            return result;
+        } catch (primaryError) {
+            console.warn('Serviço principal falhou, tentando fallback:', primaryError.message);
+
+            // Se fallback estiver habilitado, tentar EmailJS
+            if (this.fallbackEnabled) {
+                try {
+                    const fallbackResult = await this.fallbackService.sendEmail(options);
+                    return fallbackResult;
+                } catch (fallbackError) {
+                    console.error('Fallback EmailJS também falhou:', fallbackError.message);
+
+                    return {
+                        success: false,
+                        message: `Ambos os serviços falharam. Primário: ${primaryError.message}, Fallback: ${fallbackError.message}`,
+                        error: { primary: primaryError, fallback: fallbackError }
+                    };
+                }
+            } else {
+                return {
+                    success: false,
+                    message: `Serviço principal falhou: ${primaryError.message}`,
+                    error: primaryError
+                };
+            }
+        }
+    }
+
+    /**
+     * Tenta enviar email usando o serviço principal (Rust) com timeout
+     */
+    async _tryPrimaryService(options = {}) {
+        return new Promise(async (resolve, reject) => {
+            // Timeout de 30 segundos
+            const timeout = setTimeout(() => {
+                reject(new Error('Timeout: Serviço principal demorou mais de 30 segundos'));
+            }, 30000);
+
+            try {
+                // Preparar payload
+                const payload = {
+                    to: options.to,
+                    subject: options.subject,
+                    template: options.template || 'default.txt',
+                    variables: options.variables || {}
+                };
+
+                // Se não usar template, usar o corpo direto
+                if (!options.template && options.body) {
+                    payload.template = 'default.txt';
+                    payload.variables = { body: options.body };
+                }
+
+                // Fazer requisição
+                const response = await fetch(`${this.apiUrl}${this.endpoint}`, {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                    },
+                    body: JSON.stringify(payload)
+                });
+
+                const result = await response.json();
+
+                if (!response.ok) {
+                    throw new Error(result.message || 'Erro na requisição');
+                }
+
+                clearTimeout(timeout);
+                resolve({
+                    success: true,
+                    message: result.message,
+                    data: result,
+                    service: 'rust'
+                });
+
+            } catch (error) {
+                clearTimeout(timeout);
+                console.error('Erro no serviço principal:', error);
+
+                // Verifica se é erro de conexão
+                if (error.name === 'TypeError' && error.message.includes('fetch')) {
+                    reject(new Error('Erro de conexão com o servidor. Verifique se a API está rodando.'));
+                    return;
+                }
+
+                // Verifica se é erro de resposta HTTP
+                if (error.message.includes('HTTP')) {
+                    reject(new Error(`Erro do servidor: ${error.message}`));
+                    return;
+                }
+
+                reject(new Error(error.message || 'Erro desconhecido ao enviar email'));
+            }
+        });
     }
 
     /**
@@ -246,18 +285,110 @@ window.showEmailResult = (elementId, result) => {
 };
 
 /**
- * Exemplo de uso em HTML:
- *
- * <button onclick="testEmailAPI()">Testar Email</button>
- *
- * <button onclick="sendAtividade('professor@email.com', '3º Ano A', 'João Silva', 'Matemática', 'Atividade resolvida!')">
- *     Enviar Atividade
- * </button>
- *
- * <div id="result"></div>
- *
- * <script>
- *     sendAtividade('professor@email.com', '3º Ano A', 'João Silva', 'Matemática', 'Atividade resolvida!')
- *         .then(result => showEmailResult('result', result));
- * </script>
+ * Classe EmailJS - Fallback para serviço de email pago
  */
+class EmailJSFallback {
+    constructor(config = null) {
+        this.config = config;
+        this.initialized = false;
+    }
+
+    /**
+     * Inicializa o EmailJS com a configuração
+     */
+    async initialize() {
+        try {
+            if (this.initialized) return;
+
+            // Se não recebeu configuração, tenta carregar
+            if (!this.config) {
+                this.config = await this._loadEmailConfig();
+            }
+
+            if (!this.config?.public_key) {
+                console.warn('EmailJS public key not configured. Fallback disabled.');
+                return;
+            }
+
+            // Initialize emailjs
+            emailjs.init(this.config.public_key);
+            this.initialized = true;
+            console.log('EmailJS fallback service initialized successfully.');
+
+        } catch (error) {
+            console.error('Failed to initialize EmailJS fallback:', error);
+            throw error;
+        }
+    }
+
+    /**
+     * Carrega configuração do email (settings.json + secret.json)
+     */
+    async _loadEmailConfig() {
+        try {
+            // Carrega settings.json público
+            const response = await fetch('/settings.json');
+            const settings = await response.json();
+            let emailConfig = settings.email || {};
+
+            // Tenta mesclar com secret.json local
+            try {
+                const secretResp = await fetch('/secret.json');
+                if (secretResp.ok) {
+                    const secrets = await secretResp.json();
+                    if (secrets.email) {
+                        emailConfig = Object.assign({}, emailConfig, secrets.emailjs);
+                    }
+                }
+            } catch (err) {
+                console.warn('No secret.json found, using public config only:', err.message);
+            }
+
+            return emailConfig;
+        } catch (error) {
+            console.error('Failed to load email config:', error);
+            return {};
+        }
+    }
+
+    /**
+     * Envia email usando EmailJS como fallback
+     */
+    async sendEmail(options = {}) {
+        if (!this.initialized) {
+            await this.initialize();
+        }
+
+        if (!this.config || !this.config.service_id || !this.config.template_id) {
+            throw new Error('EmailJS is not configured properly.');
+        }
+
+        try {
+            // Prepara dados para o template EmailJS
+            const emailData = {
+                to_email: options.to,
+                subject: options.subject,
+                from_name: 'Sistema de Atividades',
+                message: options.body || 'Mensagem enviada via sistema de atividades escolares.',
+                ...options.variables
+            };
+
+            await emailjs.send(
+                this.config.service_id,
+                this.config.template_id,
+                emailData
+            );
+
+            return {
+                success: true,
+                message: 'Email enviado com sucesso via EmailJS (fallback)',
+                service: 'emailjs'
+            };
+
+        } catch (error) {
+            console.error('Erro no fallback EmailJS:', error);
+            throw new Error(`Fallback EmailJS failed: ${error.message}`);
+        }
+    }
+}
+

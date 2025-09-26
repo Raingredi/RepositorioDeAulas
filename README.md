@@ -8,7 +8,7 @@ Principais funcionalidades
 - Acesso protegido por senha por turma: modal de senha para acessar conteúdos restritos (senhas mantidas localmente e não versionadas).
 - Aulas e Atividades: cada aula/atividade é referenciada por caminhos estáticos (HTML) dentro da estrutura de pastas.
 - Envio de atividades: modal com editor rich-text (Quill) para resposta dos alunos. Rascunhos são salvos no localStorage.
-- Integração de envio: suporte a EmailJS para enviar respostas por e-mail quando as credenciais estão configuradas (configuração separada entre público e secreto).
+- Integração de envio: sistema híbrido com serviço Rust primário e EmailJS como fallback automático quando o serviço principal falha ou demora mais de 30 segundos.
 - UX moderna: animações sutis, modais de sucesso/erro/carregamento e navegação otimizada para desktop e mobile.
 
 Arquitetura de configuração
@@ -60,8 +60,41 @@ cp example.secret.json settings.secret.json
 ```
 
 Campos principais do template:
-- `emailjs.serviceId`, `emailjs.templateId`, `emailjs.userId` (e opcional `accessToken`) — usados para integrar envio de emails.
+- `emailjs.serviceId`, `emailjs.templateId`, `emailjs.userId` (e opcional `accessToken`) — usados para fallback de envio de emails.
+- `email.public_key`, `email.service_id`, `email.template_id` — configurações do sistema híbrido de email.
 - `turmasSenhas` — objeto com chaves por turma contendo a senha necessária para acessar conteúdos protegidos.
+
+Sistema de Email Híbrido
+------------------------
+
+O sistema utiliza dois serviços de email em cascata para máxima confiabilidade:
+
+1. **Serviço Primário (Rust)**: API local que processa emails usando SMTP direto
+2. **Fallback (EmailJS)**: Serviço pago na nuvem quando o primário falha
+
+**Fluxo de funcionamento:**
+- Tentativa inicial sempre pelo serviço Rust (mais rápido e sem custos)
+- Se falhar ou demorar >30 segundos, automaticamente usa EmailJS
+- Configuração no `settings.secret.json` (não versionado):
+
+```json
+{
+  "email": {
+    "public_key": "SUA_PUBLIC_KEY_DO_EMAILJS",
+    "service_id": "SUA_SERVICE_ID",
+    "template_id": "SUA_TEMPLATE_ID",
+    "fallback_enabled": true,
+    "timeout_ms": 30000
+  }
+}
+```
+
+**Variáveis do template EmailJS:**
+- `to_email`: Destinatário
+- `subject`: Assunto
+- `from_name`: Nome do remetente
+- `message`: Corpo da mensagem
+- Outras variáveis conforme `options.variables`
 
 Segurança:
 - Não comite `settings.secret.json` no controle de versão. Adicione-o ao `.gitignore` se ainda não estiver.
