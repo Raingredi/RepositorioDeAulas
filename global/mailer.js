@@ -56,29 +56,36 @@ class EmailSender {
             const result = await this._tryPrimaryService(options);
             return result;
         } catch (primaryError) {
-            console.warn('Serviço principal falhou, tentando fallback:', primaryError.message);
+            console.warn('Serviço principal falhou:', primaryError.message);
 
-            // Se fallback estiver habilitado, tentar EmailJS
-            if (this.fallbackEnabled) {
-                try {
-                    const fallbackResult = await this.fallbackService.sendEmail(options);
-                    return fallbackResult;
-                } catch (fallbackError) {
-                    console.error('Fallback EmailJS também falhou:', fallbackError.message);
+            // Verificar se EmailJS está configurado antes de tentar fallback
+            try {
+                await this.fallbackService.initialize();
+                // Se chegou aqui, EmailJS está configurado, tentar fallback
+                if (this.fallbackEnabled) {
+                    try {
+                        const fallbackResult = await this.fallbackService.sendEmail(options);
+                        return fallbackResult;
+                    } catch (fallbackError) {
+                        console.error('Fallback EmailJS também falhou:', fallbackError.message);
 
-                    return {
-                        success: false,
-                        message: `Ambos os serviços falharam. Primário: ${primaryError.message}, Fallback: ${fallbackError.message}`,
-                        error: { primary: primaryError, fallback: fallbackError }
-                    };
+                        return {
+                            success: false,
+                            message: `Ambos os serviços falharam. Primário: ${primaryError.message}, Fallback: ${fallbackError.message}`,
+                            error: { primary: primaryError, fallback: fallbackError }
+                        };
+                    }
                 }
-            } else {
-                return {
-                    success: false,
-                    message: `Serviço principal falhou: ${primaryError.message}`,
-                    error: primaryError
-                };
+            } catch (initError) {
+                // EmailJS não está configurado, retornar apenas erro do serviço principal
+                console.warn('EmailJS não configurado, não há fallback disponível');
             }
+
+            return {
+                success: false,
+                message: `Serviço principal falhou: ${primaryError.message}`,
+                error: primaryError
+            };
         }
     }
 
@@ -86,69 +93,71 @@ class EmailSender {
      * Tenta enviar email usando o serviço principal (Rust) com timeout
      */
     async _tryPrimaryService(options = {}) {
-        return new Promise(async (resolve, reject) => {
-            // Timeout de 30 segundos
-            const timeout = setTimeout(() => {
-                reject(new Error('Timeout: Serviço principal demorou mais de 30 segundos'));
-            }, 30000);
+        // Usar AbortController para timeout mais confiável
+        const controller = new AbortController();
+        const timeoutId = setTimeout(() => controller.abort(), 30000);
 
-            try {
-                // Preparar payload
-                const payload = {
-                    to: options.to,
-                    subject: options.subject,
-                    template: options.template || 'default.txt',
-                    variables: options.variables || {}
-                };
+        try {
+            // Preparar payload
+            const payload = {
+                to: options.to,
+                subject: options.subject,
+                template: options.template || 'default.txt',
+                variables: options.variables || {}
+            };
 
-                // Se não usar template, usar o corpo direto
-                if (!options.template && options.body) {
-                    payload.template = 'default.txt';
-                    payload.variables = { body: options.body };
-                }
-
-                // Fazer requisição
-                const response = await fetch(`${this.apiUrl}${this.endpoint}`, {
-                    method: 'POST',
-                    headers: {
-                        'Content-Type': 'application/json',
-                    },
-                    body: JSON.stringify(payload)
-                });
-
-                const result = await response.json();
-
-                if (!response.ok) {
-                    throw new Error(result.message || 'Erro na requisição');
-                }
-
-                clearTimeout(timeout);
-                resolve({
-                    success: true,
-                    message: result.message,
-                    data: result,
-                    service: 'rust'
-                });
-
-            } catch (error) {
-                clearTimeout(timeout);
-                console.error('Erro no serviço principal:', error);
-
-                // Verifica se é erro de conexão
-                if (error.name === 'TypeError' && error.message.includes('fetch')) {
-                    reject(new Error('Erro de conexão com o servidor. Verifique se a API está rodando.'));
-                    return;
-                }
-
-                // Verifica se é erro de resposta HTTP
-                if (error.message.includes('HTTP')) {
-                    reject(new Error(`Erro do servidor: ${error.message}`));
-                    return;
-                }
-
-                reject(new Error(error.message || 'Erro desconhecido ao enviar email'));
+            // Se não usar template, usar o corpo direto
+            if (!options.template && options.body) {
+                payload.template = 'default.txt';
+                payload.variables = { body: options.body };
             }
-        });
+
+            // Fazer requisição com timeout
+            const response = await fetch(`${this.apiUrl}${this.endpoint}`, {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify(payload),
+                signal: controller.signal
+            });
+
+            const result = await response.json();
+
+            if (!response.ok) {
+                throw new Error(result.message || 'Erro na requisição');
+            }
+
+            clearTimeout(timeoutId);
+            return {
+                success: true,
+                message: result.message,
+                data: result,
+                service: 'rust'
+            };
+
+        } catch (error) {
+            clearTimeout(timeoutId);
+
+            // Verificar se foi timeout
+            if (error.name === 'AbortError') {
+                throw new Error('Timeout: Serviço principal demorou mais de 30 segundos');
+            }
+
+            console.error('Erro no serviço principal:', error);
+
+            // Verifica se é erro de conexão
+            if (error.name === 'TypeError' && error.message.includes('fetch')) {
+                throw new Error('Erro de conexão com o servidor. Verifique se a API está rodando.');
+            }
+
+            // Verifica se é erro de resposta HTTP
+            if (error.message.includes('HTTP')) {
+                throw new Error(`Erro do servidor: ${error.message}`);
+            }
+
+            throw new Error(error.message || 'Erro desconhecido ao enviar email');
+        }
     }
 
     /**
@@ -325,30 +334,33 @@ class EmailJSFallback {
      * Carrega configuração do email (settings.json + secret.json)
      */
     async _loadEmailConfig() {
+        let emailConfig = {};
+
+        // Tenta carregar settings.json público (fallback)
         try {
-            // Carrega settings.json público
             const response = await fetch('/settings.json');
-            const settings = await response.json();
-            let emailConfig = settings.email || {};
-
-            // Tenta mesclar com secret.json local
-            try {
-                const secretResp = await fetch('/secret.json');
-                if (secretResp.ok) {
-                    const secrets = await secretResp.json();
-                    if (secrets.email) {
-                        emailConfig = Object.assign({}, emailConfig, secrets.emailjs);
-                    }
-                }
-            } catch (err) {
-                console.warn('No secret.json found, using public config only:', err.message);
+            if (response.ok) {
+                const settings = await response.json();
+                emailConfig = settings.email || {};
             }
-
-            return emailConfig;
         } catch (error) {
-            console.error('Failed to load email config:', error);
-            return {};
+            console.warn('Could not load settings.json:', error.message);
         }
+
+        // Tenta mesclar com secret.json local (prioridade)
+        try {
+            const secretResp = await fetch('/secret.json');
+            if (secretResp.ok) {
+                const secrets = await secretResp.json();
+                if (secrets.emailjs) {
+                    emailConfig = Object.assign({}, emailConfig, secrets.emailjs);
+                }
+            }
+        } catch (err) {
+            console.warn('No secret.json found, using available config only:', err.message);
+        }
+
+        return emailConfig;
     }
 
     /**
