@@ -7,6 +7,117 @@
  */
 
 /**
+ * Classe EmailJS - Fallback para serviço de email pago
+ */
+class EmailJSFallback {
+    constructor(config = null) {
+        this.config = config;
+        this.initialized = false;
+    }
+
+    /**
+     * Inicializa o EmailJS com a configuração
+     */
+    async initialize() {
+        try {
+            if (this.initialized) return;
+
+            // Se não recebeu configuração, tenta carregar
+            if (!this.config) {
+                this.config = await this._loadEmailConfig();
+            }
+
+            if (!this.config?.public_key) {
+                console.warn('EmailJS public key not configured. Fallback disabled.');
+                return;
+            }
+
+            // Initialize emailjs
+            emailjs.init(this.config.public_key);
+            this.initialized = true;
+            console.log('EmailJS fallback service initialized successfully.');
+
+        } catch (error) {
+            console.error('Failed to initialize EmailJS fallback:', error);
+            throw error;
+        }
+    }
+
+    /**
+     * Carrega configuração do email (settings.json + secret.json)
+     */
+    async _loadEmailConfig() {
+        let emailConfig = {};
+
+        // Tenta carregar settings.json público (fallback)
+        try {
+            const response = await fetch('/settings.json');
+            if (response.ok) {
+                const settings = await response.json();
+                emailConfig = settings.email || {};
+            }
+        } catch (error) {
+            console.warn('Could not load settings.json:', error.message);
+        }
+
+        // Tenta mesclar com secret.json local (prioridade)
+        try {
+            const secretResp = await fetch('/secret.json');
+            if (secretResp.ok) {
+                const secrets = await secretResp.json();
+                if (secrets.emailjs) {
+                    emailConfig = Object.assign({}, emailConfig, secrets.emailjs);
+                }
+            }
+        } catch (err) {
+            console.warn('No secret.json found, using available config only:', err.message);
+        }
+
+        return emailConfig;
+    }
+
+    /**
+     * Envia email usando EmailJS como fallback
+     */
+    async sendEmail(options = {}) {
+        if (!this.initialized) {
+            await this.initialize();
+        }
+
+        if (!this.config || !this.config.service_id || !this.config.template_id) {
+            throw new Error('EmailJS is not configured properly.');
+        }
+
+        try {
+            // Prepara dados para o template EmailJS
+            const emailData = {
+                to_email: options.to,
+                subject: options.subject,
+                from_name: 'Sistema de Atividades',
+                message: options.body || 'Mensagem enviada via sistema de atividades escolares.',
+                ...options.variables
+            };
+
+            await emailjs.send(
+                this.config.service_id,
+                this.config.template_id,
+                emailData
+            );
+
+            return {
+                success: true,
+                message: 'Email enviado com sucesso via EmailJS (fallback)',
+                service: 'emailjs'
+            };
+
+        } catch (error) {
+            console.error('Erro no fallback EmailJS:', error);
+            throw new Error(`Fallback EmailJS failed: ${error.message}`);
+        }
+    }
+}
+
+/**
  * Classe principal para envio de emails
  */
 class EmailSender {
@@ -292,115 +403,3 @@ window.showEmailResult = (elementId, result) => {
         </div>
     `;
 };
-
-/**
- * Classe EmailJS - Fallback para serviço de email pago
- */
-class EmailJSFallback {
-    constructor(config = null) {
-        this.config = config;
-        this.initialized = false;
-    }
-
-    /**
-     * Inicializa o EmailJS com a configuração
-     */
-    async initialize() {
-        try {
-            if (this.initialized) return;
-
-            // Se não recebeu configuração, tenta carregar
-            if (!this.config) {
-                this.config = await this._loadEmailConfig();
-            }
-
-            if (!this.config?.public_key) {
-                console.warn('EmailJS public key not configured. Fallback disabled.');
-                return;
-            }
-
-            // Initialize emailjs
-            emailjs.init(this.config.public_key);
-            this.initialized = true;
-            console.log('EmailJS fallback service initialized successfully.');
-
-        } catch (error) {
-            console.error('Failed to initialize EmailJS fallback:', error);
-            throw error;
-        }
-    }
-
-    /**
-     * Carrega configuração do email (settings.json + secret.json)
-     */
-    async _loadEmailConfig() {
-        let emailConfig = {};
-
-        // Tenta carregar settings.json público (fallback)
-        try {
-            const response = await fetch('/settings.json');
-            if (response.ok) {
-                const settings = await response.json();
-                emailConfig = settings.email || {};
-            }
-        } catch (error) {
-            console.warn('Could not load settings.json:', error.message);
-        }
-
-        // Tenta mesclar com secret.json local (prioridade)
-        try {
-            const secretResp = await fetch('/secret.json');
-            if (secretResp.ok) {
-                const secrets = await secretResp.json();
-                if (secrets.emailjs) {
-                    emailConfig = Object.assign({}, emailConfig, secrets.emailjs);
-                }
-            }
-        } catch (err) {
-            console.warn('No secret.json found, using available config only:', err.message);
-        }
-
-        return emailConfig;
-    }
-
-    /**
-     * Envia email usando EmailJS como fallback
-     */
-    async sendEmail(options = {}) {
-        if (!this.initialized) {
-            await this.initialize();
-        }
-
-        if (!this.config || !this.config.service_id || !this.config.template_id) {
-            throw new Error('EmailJS is not configured properly.');
-        }
-
-        try {
-            // Prepara dados para o template EmailJS
-            const emailData = {
-                to_email: options.to,
-                subject: options.subject,
-                from_name: 'Sistema de Atividades',
-                message: options.body || 'Mensagem enviada via sistema de atividades escolares.',
-                ...options.variables
-            };
-
-            await emailjs.send(
-                this.config.service_id,
-                this.config.template_id,
-                emailData
-            );
-
-            return {
-                success: true,
-                message: 'Email enviado com sucesso via EmailJS (fallback)',
-                service: 'emailjs'
-            };
-
-        } catch (error) {
-            console.error('Erro no fallback EmailJS:', error);
-            throw new Error(`Fallback EmailJS failed: ${error.message}`);
-        }
-    }
-}
-
