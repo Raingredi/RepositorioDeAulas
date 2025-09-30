@@ -91,6 +91,13 @@
           "titulo": "Matplotlib 01",
           "descricao": "Atividade prática sobre matplotlib",
           "caminho": "turmas/estatistica/atividades/matplotlib01.html"
+        },
+        {
+          "id": "matplotlib_02",
+          "icone": "09",
+          "titulo": "Matplotlib 02",
+          "descricao": "Atividade prática sobre matplotlib",
+          "caminho": "turmas/estatistica/atividades/matplotlib02.html"
         }
       ]
     },
