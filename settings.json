@@ -148,6 +148,11 @@
           "caminho": "turmas/terceirao/aulas/refinamentosEnem.html",
           "icone": "09",
           "descricao": "Aula de segestões para melhorar o projeto ENEM"
+        },
+        "Projeto Enem: Exposicao da API": {
+          "caminho": "turmas/terceirao/aulas/enemParte04.html",
+          "icone": "10",
+          "descricao": "Aula de como usar o ngrok para expor a IA"
         }
       },
       "atividades": [
