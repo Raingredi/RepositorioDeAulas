@@ -234,6 +234,16 @@
         "caminho": "turmas/logica/aulas/se_entao.html",
         "icone": "03",
         "descricao": "Conceitos básicos de lógica condicional: Se... Então..."
+      },
+      "Lógica de Programação: Conectivos Lógicos": {
+        "caminho": "turmas/logica/aulas/conectivos_logicos.html",
+        "icone": "04",
+        "descricao": "Representação, uso e simbologia dos conectivos lógicos AND, OR, NOT e XOR"
+      },
+      "Lógica de Programação: Leis Lógica": {
+        "caminho": "turmas/logica/aulas/leis_logica.html",
+        "icone": "05",
+        "descricao": "Leis da lógica proposicional e suas aplicações na programação"
       }
     },
     "atividades": [
@@ -257,6 +267,20 @@
         "titulo": "Exercícios de Introdução Tabela Verdade 02",
         "descricao": "Resolva os exercícios propostos sobre Tabela Verdade: Se então",
         "caminho": "turmas/logica/atividades/se_entao.html"
+      },
+      {
+        "id": "atv4",
+        "icone": "04",
+        "titulo": "Exercícios de Conectivos Lógicos",
+        "descricao": "",
+        "caminho": "turmas/logica/atividades/conectivos_logicos.html"
+      },
+      {
+        "id": "atv5",
+        "icone": "05",
+        "titulo": "Leis da Lógica Proposicional",
+        "descricao": ">Exercícios rápidos para aplicar De Morgan, distributiva, contrapositiva, precedência e simplificação.",
+        "caminho": "turmas/logica/leis_logica.html"
       }
     ]
   },
@@ -265,15 +289,20 @@
     "cor": "bg-green-500",
     "icone": "bar_chart",
     "aulas": {
-      "Laços de Repetição": {
-        "caminho": "turmas/visualizacao_dados/aulas/lacos_python.html",
-        "icone": "01",
-        "descricao": "Conceitos fundamentais de laços for e while em Python"
+      "Introdução a Python": {
+        "caminho": "turmas/visualizacao_dados/aulas/introducao_python.html",
+        "icone": "00",
+        "descricao": "Uma breve introducao à linguagem Python"
       },
       "Listas em Python": {
         "caminho": "turmas/visualizacao_dados/aulas/vetores_array.html",
-        "icone": "02",
+        "icone": "01",
         "descricao": "Conceitos e exemplos de listas em Python"
+      },
+      "Laços de Repetição": {
+        "caminho": "turmas/visualizacao_dados/aulas/lacos_python.html",
+        "icone": "02",
+        "descricao": "Conceitos fundamentais de laços for e while em Python"
       },
       "Listas em Python 02": {
         "caminho": "turmas/visualizacao_dados/aulas/listas_parte02.html",
@@ -282,6 +311,13 @@
       }
     },
     "atividades": [
+      {
+        "id": "introducao_python",
+        "icone": "00",
+        "titulo": "Exercícios introdutórios de Python",
+        "descricao": "Atividade prática sobre conceitos básicos de Python",
+        "caminho": "turmas/visualizacao_dados/atividades/introducao_python.html"
+      },
       {
         "id": "lacos_python",
         "icone": "01",
