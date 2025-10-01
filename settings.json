@@ -272,15 +272,15 @@
         "id": "atv4",
         "icone": "04",
         "titulo": "Exercícios de Conectivos Lógicos",
-        "descricao": "",
+        "descricao": "Exercícios para exercitar o uso dos conectivos lógicos AND, OR, NOT e XOR",
         "caminho": "turmas/logica/atividades/conectivos_logicos.html"
       },
       {
         "id": "atv5",
         "icone": "05",
         "titulo": "Leis da Lógica Proposicional",
-        "descricao": ">Exercícios rápidos para aplicar De Morgan, distributiva, contrapositiva, precedência e simplificação.",
-        "caminho": "turmas/logica/leis_logica.html"
+        "descricao": "Exercícios para aplicar De Morgan, distributiva, contrapositiva, precedência e simplificação.",
+        "caminho": "turmas/logica/atividades/leis_logica.html"
       }
     ]
   },
