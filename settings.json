@@ -319,18 +319,11 @@
         "caminho": "turmas/visualizacao_dados/atividades/introducao_python.html"
       },
       {
-        "id": "lacos_python",
-        "icone": "01",
-        "titulo": "Laços de Repetição em Python",
-        "descricao": "Atividade prática sobre laços for e while",
-        "caminho": "turmas/visualizacao_dados/atividades/laco_python.html"
-      },
-      {
         "id": "listas_python",
-        "icone": "02-03",
-        "titulo": "Listas e Estruturas de Dados em Python",
-        "descricao": "Exercícios sobre listas, vetores e manipulação de dados",
-        "caminho": "turmas/visualizacao_dados/atividades/try_libs_python.html"
+        "icone": "01",
+        "titulo": "Listas em Python",
+        "descricao": "Exercícios sobre listas e manipulação de dados",
+        "caminho": "turmas/visualizacao_dados/atividades/vetores_array.html"
       }
     ]
   }
