@@ -98,7 +98,29 @@
           "titulo": "Matplotlib 02",
           "descricao": "Atividade prática sobre matplotlib",
           "caminho": "turmas/estatistica/atividades/matplotlib02.html"
+        },
+        {
+          "id": "provaA",
+          "icone": "10",
+          "titulo": "Avaliação - Grupo A",
+          "descricao": "Primeira Avaliação da disciplina",
+          "caminho": "turmas/estatistica/atividades/provaA.html"
+        },
+        {
+          "id": "provaB",
+          "icone": "10",
+          "titulo": "Avaliação - Grupo B",
+          "descricao": "Primeira Avaliação da disciplina",
+          "caminho": "turmas/estatistica/atividades/provaB.html"
+        },
+        {
+          "id": "provaC",
+          "icone": "10",
+          "titulo": "Avaliação - Grupo C",
+          "descricao": "Primeira Avaliação da disciplina",
+          "caminho": "turmas/estatistica/atividades/provaC.html"
         }
+
       ]
     },
     "terceirao": {
