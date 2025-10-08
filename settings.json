@@ -349,9 +349,9 @@
       },
       {
         "id": "laco_python",
-        "icone": "02",
-        "titulo": "Listas em Python",
-        "descricao": "Exercícios sobre listas e manipulação de dados",
+        "icone": "02-03",
+        "titulo": "Laços em Python",
+        "descricao": "Exercícios sobre laços e manipulação de dados",
         "caminho": "turmas/visualizacao_dados/atividades/laco_python.html"
       }
     ]
