@@ -346,6 +346,13 @@
         "titulo": "Listas em Python",
         "descricao": "Exercícios sobre listas e manipulação de dados",
         "caminho": "turmas/visualizacao_dados/atividades/vetores_array.html"
+      },
+      {
+        "id": "laco_python",
+        "icone": "02",
+        "titulo": "Listas em Python",
+        "descricao": "Exercícios sobre listas e manipulação de dados",
+        "caminho": "turmas/visualizacao_dados/atividades/laco_python.html"
       }
     ]
   }
