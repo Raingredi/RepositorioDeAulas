@@ -183,6 +183,12 @@
           "icone": "10",
           "descricao": "Aula de como usar o ngrok para expor a IA"
         }
+        ,
+        "Tokens JWT": {
+          "caminho": "turmas/terceirao/aulas/enem_parte05.html",
+          "icone": "11",
+          "descricao": "Entenda JSON Web Tokens (Header, Payload, Signature), o fluxo de autenticação/autoriza\u00e7\u00e3o com JWT e boas práticas para proteger APIs e ações administrativas."
+        }
       },
       "atividades": [
         {
