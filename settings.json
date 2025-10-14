@@ -55,9 +55,15 @@
           "icone": "09",
           "descricao": "Aula prática sobre Matplotlib, segunda parte."
         },
+        "União e Interseção": {
+          "caminho": "turmas/estatistica/aulas/Uniao_Intersecao.html",
+          "icone": "10",
+          "descricao": "Aula prática sobre conjutos: união e interseção."
+        },
+
         "Probabilidade Condicional Independencia": {
           "caminho": "turmas/estatistica/aulas/Probabilidade_Condicional_Independencia.html",
-          "icone": "10",
+          "icone": "11",
           "descricao": "Conceitos básicos de probabilidade"
         }
       },
@@ -127,7 +133,7 @@
         },
         {
           "id": "probabilidade_condicional",
-          "icone": "10",
+          "icone": "10-11",
           "titulo": "Probabilidade Condicional e Independência",
           "descricao": "Exercícios sobre probabilidade condicional e independência",
           "caminho": "turmas/estatistica/atividades/Probabilidade_Condicional_Independencia.html"
