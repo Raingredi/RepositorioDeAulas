@@ -54,6 +54,11 @@
           "caminho": "turmas/estatistica/aulas/matplotlib_parte02.html",
           "icone": "09",
           "descricao": "Aula prática sobre Matplotlib, segunda parte."
+        },
+        "Probabilidade Condicional Independencia": {
+          "caminho": "turmas/estatistica/aulas/Probabilidade_Condicional_Independencia.html",
+          "icone": "10",
+          "descricao": "Conceitos básicos de probabilidade"
         }
       },
       "atividades": [
@@ -101,24 +106,31 @@
         },
         {
           "id": "provaA",
-          "icone": "10",
+          "icone": "A1",
           "titulo": "Avaliação - Grupo A",
           "descricao": "Primeira Avaliação da disciplina",
           "caminho": "turmas/estatistica/atividades/provaA.html"
         },
         {
           "id": "provaB",
-          "icone": "10",
+          "icone": "A1",
           "titulo": "Avaliação - Grupo B",
           "descricao": "Primeira Avaliação da disciplina",
           "caminho": "turmas/estatistica/atividades/provaB.html"
         },
         {
           "id": "provaC",
-          "icone": "10",
+          "icone": "A1",
           "titulo": "Avaliação - Grupo C",
           "descricao": "Primeira Avaliação da disciplina",
           "caminho": "turmas/estatistica/atividades/provaC.html"
+        },
+        {
+          "id": "probabilidade_condicional",
+          "icone": "10",
+          "titulo": "Probabilidade Condicional e Independência",
+          "descricao": "Exercícios sobre probabilidade condicional e independência",
+          "caminho": "turmas/estatistica/atividades/Probabilidade_Condicional_Independencia.html"
         }
 
       ]

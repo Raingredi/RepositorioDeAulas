@@ -1,0 +1,149 @@
+
+<script src="https://cdn.tailwindcss.com"></script>
+
+<div class="max-w-4xl mx-auto p-8 bg-gray-50">
+    <header class="mb-8 text-center">
+        <h1 class="text-3xl font-bold text-gray-800">Atividade — Probabilidade Condicional e Independência</h1>
+        <p class="text-sm text-gray-600 mt-2">Questões práticas para fixar conceitos e aplicar Python</p>
+    </header>
+
+<ol class="space-y-6 list-none">
+    <!-- Questão 1 -->
+    <li class="bg-white shadow rounded-2xl p-6 border border-gray-100">
+        <h2 class="text-lg font-semibold text-gray-800">Questão 1 — Definições (Escolha múltipla)</h2>
+        <p class="mt-2 text-gray-700">
+            Marque a alternativa correta:
+        </p>
+        <ul class="mt-3 list-disc pl-5 text-gray-700 space-y-1">
+            <li><strong>a)</strong> Probabilidade condicional P(A|B) é sempre igual a P(A ∩ B). </li>
+            <li><strong>b)</strong> Dois eventos A e B são independentes se P(A|B) = P(A). </li>
+            <li><strong>c)</strong> A Falácia da Conjunção afirma que P(A ∩ B) ≥ P(A). </li>
+            <li><strong>d)</strong> P(A ∩ B) = P(A) + P(B) para quaisquer dois eventos A e B.</li>
+        </ul>
+        <p class="mt-2 text-sm text-gray-600">Escolha a alternativa correta e escreva uma linha justificando.</p>
+    </li>
+
+    <!-- Questão 2 -->
+    <li class="bg-white shadow rounded-2xl p-6 border border-gray-100">
+        <h2 class="text-lg font-semibold text-gray-800">Questão 2 — Biblioteca (Cálculo)</h2>
+        <p class="mt-2 text-gray-700">
+            Relembre o exemplo da biblioteca: 100 livros, 30 de ficção científica (30%), destes 20 são capa dura; entre os 70 outros, 10 são capa dura.
+        </p>
+        <ul class="mt-3 list-decimal pl-5 text-gray-700 space-y-1">
+            <li>Calcule P(CiênciaFicção).</li>
+            <li>Calcule P(CapaDura).</li>
+            <li>Calcule P(CiênciaFicção | CapaDura).</li>
+            <li>Calcule P(CapaDura | CiênciaFicção).</li>
+        </ul>
+        <p class="mt-2 text-sm text-gray-600">Mostre os passos (frações ou porcentagens).</p>
+    </li>
+
+    <!-- Questão 3 -->
+    <li class="bg-white shadow rounded-2xl p-6 border border-gray-100">
+        <h2 class="text-lg font-semibold text-gray-800">Questão 3 — Interpretação: Independência</h2>
+        <p class="mt-2 text-gray-700">
+            Usando os resultados da Questão 2:
+        </p>
+        <p class="mt-2 text-gray-700">
+            <strong>Os eventos "ser ficção científica" e "ter capa dura" são independentes?</strong>
+        </p>
+        <p class="mt-2 text-sm text-gray-600">Explique sua resposta mostrando o cálculo que verifica se P(A|B) = P(A) (ou outra condição equivalente).</p>
+    </li>
+
+    <!-- Questão 4 -->
+    <li class="bg-white shadow rounded-2xl p-6 border border-gray-100">
+        <h2 class="text-lg font-semibold text-gray-800">Questão 4 — Falácia da Conjunção (Curto-resposta)</h2>
+        <p class="mt-2 text-gray-700">
+            Reescreva em suas próprias palavras por que a opção "<em>Um político experiente perde a eleição após uma grande crise econômica</em>" não pode ser mais provável do que "<em>Um político experiente perde a eleição</em>".
+        </p>
+        <p class="mt-2 text-sm text-gray-600">Dê um exemplo numérico simples (com probabilidades) que ilustre a falácia.</p>
+    </li>
+
+    <!-- Questão 5 -->
+    <li class="bg-white shadow rounded-2xl p-6 border border-gray-100">
+        <h2 class="text-lg font-semibold text-gray-800">Questão 5 — Tabela: Sorveteria (Cálculo e interpretação)</h2>
+        <p class="mt-2 text-gray-700">
+            Dados (100 dias):
+        </p>
+        <div class="mt-3 overflow-x-auto">
+            <table class="min-w-full text-sm text-left border-collapse">
+                <thead>
+                    <tr>
+                        <th class="px-3 py-2 border"> </th>
+                        <th class="px-3 py-2 border">Vendeu Muito</th>
+                        <th class="px-3 py-2 border">Vendeu Pouco</th>
+                        <th class="px-3 py-2 border">Total</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td class="px-3 py-2 border"><strong>Dia de Sol</strong></td>
+                        <td class="px-3 py-2 border">40</td>
+                        <td class="px-3 py-2 border">10</td>
+                        <td class="px-3 py-2 border">50</td>
+                    </tr>
+                    <tr>
+                        <td class="px-3 py-2 border"><strong>Dia Nublado</strong></td>
+                        <td class="px-3 py-2 border">20</td>
+                        <td class="px-3 py-2 border">30</td>
+                        <td class="px-3 py-2 border">50</td>
+                    </tr>
+                    <tr>
+                        <td class="px-3 py-2 border"><strong>Total</strong></td>
+                        <td class="px-3 py-2 border">60</td>
+                        <td class="px-3 py-2 border">40</td>
+                        <td class="px-3 py-2 border">100</td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+
+        <ul class="mt-3 list-decimal pl-5 text-gray-700 space-y-1">
+            <li>Calcule P(Vender Muito).</li>
+            <li>Calcule P(Vender Muito | Dia de Sol).</li>
+            <li>Calcule P(Dia de Sol | Vender Muito).</li>
+            <li>Com base nos números, responda: as vendas e o clima parecem independentes? Justifique com cálculos.</li>
+        </ul>
+    </li>
+
+    <!-- Questão 6 -->
+    <li class="bg-white shadow rounded-2xl p-6 border border-gray-100">
+        <h2 class="text-lg font-semibold text-gray-800">Questão 6 — Implementação em Python</h2>
+        <p class="mt-2 text-gray-700">
+            Escreva um pequeno trecho de código (usando pandas ou puro Python) que calcule as probabilidades pedidas na Questão 5 e imprima:
+        </p>
+        <pre class="mt-3 bg-gray-50 p-3 rounded-md border border-gray-200 text-sm"><code># Exemplo esperado:
+
+# P(Vender Muito)
+
+# P(Vender Muito | Dia de Sol)
+
+# P(Dia de Sol | Vender Muito)
+
+</code></pre> <p class="mt-2 text-sm text-gray-600">Seu código deve criar os dados conforme a tabela e calcular as probabilidades numericamente (não apenas escrever as fórmulas).</p> </li>
+
+
+    <!-- Questão 7 -->
+    <li class="bg-white shadow rounded-2xl p-6 border border-gray-100">
+        <h2 class="text-lg font-semibold text-gray-800">Questão 7 — Aplicação (Resposta Curta)</h2>
+        <p class="mt-2 text-gray-700">
+            Escolha um dos exemplos do slide "Aplicação no Mundo Real" (Spam, Diagnóstico Médico ou Recomendação de Filmes) e:
+        </p>
+        <ul class="mt-3 list-disc pl-5 text-gray-700 space-y-1">
+            <li>Descreva qual é A e qual é B (no formato P(A|B)).</li>
+            <li>Explique brevemente como dados (frequências) e a probabilidade condicional ajudam a tomar uma decisão nessa situação.</li>
+        </ul>
+    </li>
+
+    <!-- Questão 8 -->
+    <li class="bg-white shadow rounded-2xl p-6 border border-gray-100">
+        <h2 class="text-lg font-semibold text-gray-800">Questão 8 — Verdadeiro ou Falso (Justifique)</h2>
+        <ul class="mt-3 list-decimal pl-5 text-gray-700 space-y-2">
+            <li>Se P(A ∩ B) = 0 então A e B são independentes.</li>
+            <li>Se P(A|B) > P(A) então A torna-se mais provável após B ocorrer.</li>
+            <li>Para qualquer evento B com P(B)=0, P(A|B) está bem definida.</li>
+        </ul>
+        <p class="mt-2 text-sm text-gray-600">Escreva Verdadeiro ou Falso e dê uma justificativa curta para cada item.</p>
+    </li>
+</ol>
+</div>
