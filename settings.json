@@ -165,7 +165,7 @@
         },
         "Projeto Enem: Prompts IA": {
           "caminho": "turmas/terceirao/aulas/projeto_enem_ia.html",
-          "icone": "08",
+          "icone": "07",
           "descricao": "Aula de como fazer bons prompts para a IA"
         },
         "Banco de Dados Parte 02": {
@@ -188,6 +188,11 @@
           "caminho": "turmas/terceirao/aulas/enem_parte05.html",
           "icone": "11",
           "descricao": "Entenda JSON Web Tokens (Header, Payload, Signature), o fluxo de autenticação/autoriza\u00e7\u00e3o com JWT e boas práticas para proteger APIs e ações administrativas."
+        },
+        "Banco de Dados Parte 03": {
+          "caminho": "turmas/terceirao/aulas/banco_de_dados_parte03.html",
+          "icone": "12",
+          "descricao": "Resumo das novas funcionalidades do projeto ENEM"
         }
       },
       "atividades": [
