@@ -244,7 +244,15 @@
           "titulo": "Projeto ENEM: Equipe Anko",
           "descricao": "Instruções da equipe JSON para o Projeto ENEM",
           "caminho": "turmas/terceirao/atividades/ENEM_JSON.html"
-        }
+        },
+        {
+          "id": "ENEM_F2",
+          "icone": "10-12",
+          "titulo": "Projeto ENEM: Fase 02",
+          "descricao": "Instruções de cada equipe para a Fase 02 do Projeto ENEM",
+          "caminho": "turmas/terceirao/atividades/ENEM_Fase02.html"
+        },
+
       ]
     }
   },
