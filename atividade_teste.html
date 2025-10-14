@@ -1,0 +1,356 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Atividade de Reforço</title>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+  <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.5.1/dist/confetti.browser.min.js"></script>
+  <style>
+    .fade-in {
+      animation: fadeIn 0.3s ease-in;
+    }
+    @keyframes fadeIn {
+      from {
+        opacity: 0;
+        transform: translateY(-10px);
+      }
+      to {
+        opacity: 1;
+        transform: translateY(0);
+      }
+    }
+  </style>
+</head>
+<body class="bg-gradient-to-br from-blue-50 to-indigo-100 min-h-screen py-8">
+  <!-- Toast de Vitória -->
+  <div id="toast-vitoria" class="hidden fixed top-4 right-4 z-50 bg-gradient-to-r from-green-500 to-emerald-500 text-white px-6 py-4 rounded-xl shadow-2xl max-w-md transform transition-all duration-500">
+    <div class="flex items-center gap-4">
+      <span class="material-icons text-4xl">emoji_events</span>
+      <div>
+        <h3 class="font-bold text-lg">🎉 Parabéns!</h3>
+        <p class="text-sm text-green-50">Você acertou todas as questões!</p>
+      </div>
+      <button onclick="$('#toast-vitoria').addClass('hidden')" class="ml-4 hover:bg-white/20 rounded-full p-1">
+        <span class="material-icons">close</span>
+      </button>
+    </div>
+  </div>
+
+  <div class="container mx-auto px-4 max-w-3xl">
+    <div class="bg-white rounded-2xl shadow-2xl p-8 mb-8">
+      <h1 class="text-4xl font-bold text-indigo-600 mb-2 flex items-center gap-3">
+        <span class="material-icons text-5xl">quiz</span>
+        Atividade de Reforço
+      </h1>
+      <p class="text-gray-600 mb-6">Responda todas as questões sem medo de errar! Voce nao sera avaliado aqui</p>
+      
+      <div class="flex items-center justify-between mb-6 bg-indigo-50 rounded-lg p-4">
+        <div class="flex items-center gap-2">
+          <span class="material-icons text-indigo-600">emoji_events</span>
+          <span class="font-semibold text-gray-700">Progresso:</span>
+        </div>
+        <div class="text-2xl font-bold text-indigo-600">
+          <span id="acertos">0</span> / <span id="total">0</span>
+        </div>
+      </div>
+    </div>
+
+    <div id="questoes-container"></div>
+  </div>
+
+  <script>
+    const quizData = {
+    "questoes": [
+      {
+        "id": 1,
+        "enunciado": "Qual a sintaxe correta para declarar uma variável de texto (string) em Python?",
+        "alternativas": [
+          { "letra": "A", "texto": "nome = Maria", "correta": false },
+          { "letra": "B", "texto": "nome = \"Maria\"", "correta": true },
+          { "letra": "C", "texto": "string nome = \"Maria\"", "correta": false },
+          { "letra": "D", "texto": "nome = (\"Maria\")", "correta": false }
+        ],
+        "justificativas": {
+          "A": "Incorreto. Textos em Python devem sempre estar entre aspas (simples ' ou duplas \"). Sem aspas, o Python tentaria interpretar 'Maria' como outra variável.",
+          "C": "Incorreto. Python é uma linguagem de tipagem dinâmica, o que significa que você não precisa declarar o tipo da variável (como `string` ou `int`) antes de usá-la.",
+          "D": "Incorreto. Embora o uso de parênteses não cause um erro aqui, eles são desnecessários para a atribuição de uma string simples e não são a forma padrão de declaração."
+        }
+      },
+      {
+        "id": 2,
+        "enunciado": "A função `input()` sempre retorna um texto. Como converter corretamente a entrada do usuário para um número inteiro e guardá-la na variável `idade`?",
+        "alternativas": [
+          { "letra": "A", "texto": "idade = int(input(\"Qual sua idade?\"))", "correta": true },
+          { "letra": "B", "texto": "idade = input(int(\"Qual sua idade?\"))", "correta": false },
+          { "letra": "C", "texto": "idade = integer(input(\"Qual sua idade?\"))", "correta": false },
+          { "letra": "D", "texto": "idade = input(\"Qual sua idade?\")", "correta": false }
+        ],
+        "justificativas": {
+          "B": "Incorreto. A função `int()` deve ser usada para converter o *resultado* da função `input()`, e não para ser colocada dentro dela.",
+          "C": "Incorreto. A função de conversão para inteiro em Python é `int()`, não `integer()`.",
+          "D": "Incorreto. Desta forma, a variável `idade` guardaria o número como um texto (ex: \"30\"), o que impediria a realização de cálculos matemáticos, como `idade + 1`."
+        }
+      },
+      {
+        "id": 3,
+        "enunciado": "Qual comando `range()` em Python gera a sequência de números `0, 2, 4, 6, 8`?",
+        "alternativas": [
+          { "letra": "A", "texto": "range(0, 9, 2)", "correta": false },
+          { "letra": "B", "texto": "range(10, 2)", "correta": false },
+          { "letra": "C", "texto": "range(0, 10, 2)", "correta": true },
+          { "letra": "D", "texto": "range(5)", "correta": false }
+        ],
+        "justificativas": {
+          "A": "Incorreto. O `range(inicio, fim, passo)` gera números até `fim - 1`. Portanto, `range(0, 9, 2)` geraria `0, 2, 4, 6, 8`, mas o correto é parar antes de 10.",
+          "B": "Incorreto. Quando o 'passo' é positivo (ou omitido), o número inicial deve ser menor que o final para que a sequência seja gerada.",
+          "D": "Incorreto. `range(5)` é um atalho para `range(0, 5, 1)`, que gera a sequência `0, 1, 2, 3, 4`."
+        }
+      },
+      {
+        "id": 4,
+        "enunciado": "No trecho `contador = 1; while contador <= 5: print(contador)`, qual linha é crucial adicionar dentro do laço para evitar um loop infinito?",
+        "alternativas": [
+          { "letra": "A", "texto": "contador = 1", "correta": false },
+          { "letra": "B", "texto": "print(\"Fim\")", "correta": false },
+          { "letra": "C", "texto": "if contador == 5: break", "correta": false },
+          { "letra": "D", "texto": "contador = contador + 1", "correta": true }
+        ],
+        "justificativas": {
+          "A": "Incorreto. Esta é a inicialização da variável, que acontece *antes* do laço começar.",
+          "B": "Incorreto. A função `print()` apenas exibe um valor na tela, mas não altera a variável de controle do laço.",
+          "C": "Incorreto. Embora um `break` possa interromper o laço, a maneira fundamental de controlar um `while` é garantir que a sua condição de parada seja eventualmente alcançada, o que é feito atualizando a variável de controle."
+        }
+      },
+      {
+        "id": 5,
+        "enunciado": "Para enviar dados `turma=Terceirão` para uma URL usando o método POST com `curl`, qual é a sintaxe correta?",
+        "alternativas": [
+          { "letra": "A", "texto": "curl -X POST http://url.com -d \"turma=Terceirão\"", "correta": true },
+          { "letra": "B", "texto": "curl -P http://url.com --data \"turma=Terceirão\"", "correta": false },
+          { "letra": "C", "texto": "curl -GET http://url.com -d (turma=Terceirão)", "correta": false },
+          { "letra": "D", "texto": "curl -X POST http://url.com \"turma=Terceirão\"", "correta": false }
+        ],
+        "justificativas": {
+          "B": "Incorreto. A flag para especificar o método é `-X POST`, e a flag para dados é `-d` ou `--data`. A flag `-P` não é usada para este propósito.",
+          "C": "Incorreto. `-GET` não é uma flag válida, e os dados devem ser passados como uma string entre aspas, não parênteses.",
+          "D": "Incorreto. Faltou a flag `-d` antes dos dados para indicar que a string \"turma=Terceirão\" é o corpo da requisição."
+        }
+      },
+      {
+        "id": 6,
+        "enunciado": "Qual comando `curl` é usado para baixar um arquivo e salvá-lo com o mesmo nome que ele tem no servidor?",
+        "alternativas": [
+          { "letra": "A", "texto": "curl -o https://site.com/arquivo.zip", "correta": false },
+          { "letra": "B", "texto": "curl -O https://site.com/arquivo.zip", "correta": true },
+          { "letra": "C", "texto": "curl --save https://site.com/arquivo.zip", "correta": false },
+          { "letra": "D", "texto": "curl -S https://site.com/arquivo.zip", "correta": false }
+        ],
+        "justificativas": {
+          "A": "Incorreto. A flag `-o` (letra 'o' minúscula) salva o arquivo, mas exige que você especifique um nome para ele na frente (ex: `curl -o meu_arquivo.zip ...`).",
+          "C": "Incorreto. A flag `--save` não é um comando padrão do `curl` para salvar arquivos.",
+          "D": "Incorreto. A flag `-S` é usada para mostrar erros de forma silenciosa, sem suprimir a saída do resultado."
+        }
+      },
+      {
+        "id": 7,
+        "enunciado": "Qual é o erro mais perigoso no comando `UPDATE LIVROS SET Status = 'Perdido';` que poderia afetar toda a tabela?",
+        "alternativas": [
+          { "letra": "A", "texto": "A palavra 'Perdido' deveria estar em letras minúsculas.", "correta": false },
+          { "letra": "B", "texto": "Faltou a cláusula `WHERE` para especificar qual livro atualizar.", "correta": true },
+          { "letra": "C", "texto": "Deveria ser `CHANGE` em vez de `SET`.", "correta": false },
+          { "letra": "D", "texto": "O nome da tabela `LIVROS` está incorreto.", "correta": false }
+        ],
+        "justificativas": {
+          "A": "Incorreto. A sensibilidade a maiúsculas/minúsculas para dados depende da configuração do banco, mas este não é o erro perigoso da estrutura do comando.",
+          "C": "Incorreto. A palavra-chave correta para definir novos valores em um `UPDATE` é `SET`.",
+          "D": "Incorreto. Assumindo que o nome da tabela está correto, o perigo reside na falta de um filtro para a atualização."
+        }
+      },
+      {
+        "id": 8,
+        "enunciado": "Para listar TODOS os clientes e seus respectivos pedidos, incluindo clientes que NUNCA fizeram um pedido, qual `JOIN` é o mais apropriado?",
+        "alternativas": [
+          { "letra": "A", "texto": "INNER JOIN", "correta": false },
+          { "letra": "B", "texto": "ALL JOIN", "correta": false },
+          { "letra": "C", "texto": "LEFT JOIN", "correta": true },
+          { "letra": "D", "texto": "CROSS JOIN", "correta": false }
+        ],
+        "justificativas": {
+          "A": "Incorreto. O `INNER JOIN` retornaria apenas os clientes que têm correspondência na tabela de pedidos, excluindo aqueles que nunca compraram.",
+          "B": "Incorreto. `ALL JOIN` não é uma sintaxe padrão em SQL para este propósito.",
+          "D": "Incorreto. O `CROSS JOIN` criaria uma combinação de cada cliente com cada pedido, resultando em dados incorretos e massivos (produto cartesiano)."
+        }
+      },
+      {
+        "id": 9,
+        "enunciado": "Numa estrutura de blog com tabelas `Autores` (com `id_autor` PK) e `Posts`, qual é a função da coluna `id_autor` dentro da tabela `Posts`?",
+        "alternativas": [
+          { "letra": "A", "texto": "É a Chave Primária (PK) da tabela `Posts`.", "correta": false },
+          { "letra": "B", "texto": "É uma Chave Estrangeira (FK) que referencia a tabela `Autores`.", "correta": true },
+          { "letra": "C", "texto": "É apenas um campo de texto para guardar o nome do autor.", "correta": false },
+          { "letra": "D", "texto": "É um índice para acelerar a busca por posts.", "correta": false }
+        ],
+        "justificativas": {
+          "A": "Incorreto. A Chave Primária da tabela `Posts` seria uma coluna que identifica unicamente cada post, como `id_post`.",
+          "C": "Incorreto. Para manter a integridade dos dados, a Chave Estrangeira armazena o ID (um número), e não o nome do autor (um texto), para criar o vínculo.",
+          "D": "Incorreto. Embora uma Chave Estrangeira seja frequentemente indexada para melhorar o desempenho, sua função principal é estabelecer o relacionamento entre as tabelas."
+        }
+      },
+      {
+        "id": 10,
+        "enunciado": "Qual comando `SELECT` busca o `Titulo` e `Autor` da tabela `LIVROS` apenas para os livros cujo autor é 'Machado de Assis'?",
+        "alternativas": [
+          { "letra": "A", "texto": "SELECT Titulo, Autor FROM LIVROS WHERE Autor = 'Machado de Assis';", "correta": true },
+          { "letra": "B", "texto": "SELECT Titulo, Autor FROM LIVROS FILTER Autor = 'Machado de Assis';", "correta": false },
+          { "letra": "C", "texto": "GET Titulo, Autor FROM LIVROS WHERE Autor = 'Machado de Assis';", "correta": false },
+          { "letra": "D", "texto": "SELECT Titulo, Autor ON LIVROS WITH Autor = 'Machado de Assis';", "correta": false }
+        ],
+        "justificativas": {
+          "B": "Incorreto. A cláusula correta para filtrar os resultados de uma consulta em SQL é `WHERE`, não `FILTER`.",
+          "C": "Incorreto. O comando padrão para buscar (selecionar) dados em SQL é `SELECT`, não `GET`.",
+          "D": "Incorreto. A sintaxe para especificar a tabela é `FROM nome_da_tabela` e para filtrar é `WHERE condicao`."
+        }
+      }
+    ]
+  };
+
+    let acertosCount = 0;
+    const questoesRespondidas = {};
+
+    function renderizarQuestoes() {
+      const container = $('#questoes-container');
+      $('#total').text(quizData.questoes.length);
+
+      quizData.questoes.forEach((questao, index) => {
+        const questaoHtml = `
+          <div class="bg-white rounded-2xl shadow-xl p-8 mb-6 questao-card" data-questao-id="${questao.id}">
+            <div class="flex items-start gap-3 mb-4">
+              <span class="material-icons text-3xl text-indigo-500">help_outline</span>
+              <h2 class="text-xl font-bold text-gray-800">${index + 1}. ${questao.enunciado}</h2>
+            </div>
+            
+            <div class="space-y-3 alternativas-container">
+              ${questao.alternativas.map((alt, altIndex) => `
+                <div class="flex items-stretch gap-3">
+                  <div class="flex items-center justify-center w-10 h-auto">
+                    <span class="font-bold text-2xl text-indigo-600">${alt.letra}</span>
+                  </div>
+                  <button class="alternativa flex-1 text-left p-4 rounded-lg border-2 border-gray-200 hover:border-indigo-400 hover:bg-indigo-50 transition-all duration-200 flex items-center gap-3" data-questao-id="${questao.id}" data-correta="${alt.correta}" data-letra="${alt.letra}">
+                    <span class="material-icons text-gray-400 icon-alternativa">radio_button_unchecked</span>
+                    <span class="flex-1 font-medium text-gray-700">${alt.texto}</span>
+                  </button>
+                </div>
+              `).join('')}
+            </div>
+
+            <div class="justificativa-container mt-4 hidden">
+              <div class="bg-red-50 border-l-4 border-red-500 p-4 rounded-r-lg fade-in">
+                <div class="flex items-start gap-3">
+                  <span class="material-icons text-red-500 mt-1">error_outline</span>
+                  <div>
+                    <h3 class="font-bold text-red-800 mb-1">Resposta Incorreta</h3>
+                    <p class="text-red-700 justificativa-texto"></p>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <div class="sucesso-container mt-4 hidden">
+              <div class="bg-green-50 border-l-4 border-green-500 p-4 rounded-r-lg fade-in">
+                <div class="flex items-center gap-3">
+                  <span class="material-icons text-green-500">check_circle</span>
+                  <p class="font-bold text-green-800">Resposta Correta! 🎉</p>
+                </div>
+              </div>
+            </div>
+          </div>
+        `;
+        container.append(questaoHtml);
+      });
+    }
+
+    function verificarVitoria() {
+      if (acertosCount === quizData.questoes.length) {
+        setTimeout(() => {
+          const duration = 3 * 1000;
+          const end = Date.now() + duration;
+
+          (function frame() {
+            confetti({
+              particleCount: 5,
+              angle: 60,
+              spread: 55,
+              origin: { x: 0 },
+              colors: ['#6366f1', '#8b5cf6', '#ec4899', '#f59e0b']
+            });
+            confetti({
+              particleCount: 5,
+              angle: 120,
+              spread: 55,
+              origin: { x: 1 },
+              colors: ['#6366f1', '#8b5cf6', '#ec4899', '#f59e0b']
+            });
+
+            if (Date.now() < end) {
+              requestAnimationFrame(frame);
+            }
+          }());
+
+          // Mostra toast de vitória
+          $('#toast-vitoria').removeClass('hidden').addClass('animate-bounce');
+          setTimeout(() => {
+            $('#toast-vitoria').removeClass('animate-bounce');
+          }, 1000);
+
+          // Auto-esconde após 5 segundos
+          setTimeout(() => {
+            $('#toast-vitoria').addClass('hidden');
+          }, 5000);
+        }, 300);
+      }
+    }
+
+    $(document).on('click', '.alternativa', function() {
+      const btn = $(this);
+      const questaoId = btn.data('questao-id');
+      const correta = btn.data('correta');
+      const letra = btn.data('letra');
+      const questaoCard = btn.closest('.questao-card');
+      const questao = quizData.questoes.find(q => q.id === questaoId);
+
+      // Limpa estados anteriores
+      questaoCard.find('.alternativa').removeClass('bg-green-100 border-green-500 bg-red-100 border-red-500');
+      questaoCard.find('.icon-alternativa').text('radio_button_unchecked').removeClass('text-green-500 text-red-500').addClass('text-gray-400');
+      questaoCard.find('.justificativa-container').addClass('hidden');
+      questaoCard.find('.sucesso-container').addClass('hidden');
+
+      if (correta) {
+        btn.addClass('bg-green-100 border-green-500');
+        btn.find('.icon-alternativa').text('check_circle').removeClass('text-gray-400').addClass('text-green-500');
+        questaoCard.find('.sucesso-container').removeClass('hidden');
+
+        if (!questoesRespondidas[questaoId]) {
+          acertosCount++;
+          questoesRespondidas[questaoId] = true;
+          $('#acertos').text(acertosCount);
+          verificarVitoria();
+        }
+      } else {
+        btn.addClass('bg-red-100 border-red-500');
+        btn.find('.icon-alternativa').text('cancel').removeClass('text-gray-400').addClass('text-red-500');
+        
+        const justificativa = questao.justificativas[letra];
+        questaoCard.find('.justificativa-texto').text(justificativa);
+        questaoCard.find('.justificativa-container').removeClass('hidden');
+      }
+    });
+
+    $(document).ready(function() {
+      renderizarQuestoes();
+    });
+  </script>
+</body>
+</html>
