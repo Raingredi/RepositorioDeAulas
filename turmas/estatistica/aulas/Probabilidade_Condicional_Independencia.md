@@ -44,18 +44,18 @@ Estatística e Python na Prática
 
 Imagine uma biblioteca com 100 livros. A chance de pegar um livro de ficção científica é de 30%.
 <div class="mermaid">
-graph LR;
-    A["Biblioteca (100 Livros)"] --> B{"Ficção Científica?"};
-    B -- "30% (30 Livros)" --> C["Sim"];
-    B -- "70% (70 Livros)" --> D["Não"];
+graph LR
+    A["Biblioteca (100 Livros)"] --> B{"Ficção Científica?"}
+    B -- "{30% (30 Livros)}" --> C["Sim"]
+    B -- "{70% (70 Livros)}" --> D["Não"]
     
-    C --> E{"Capa Dura?"};
-    E -- "20 Livros" --> F["Sim"];
-    E -- "10 Livros" --> G["Não"];
+    C --> E{"Capa Dura?"}
+    E -- "{20 Livros}" --> F["Sim"]
+    E -- "{10 Livros}" --> G["Não"]
     
-    D --> H{"Capa Dura?"};
-    H -- "10 Livros" --> I["Sim"];
-    H -- "60 Livros" --> J["Não"];
+    D --> H{"Capa Dura?"}
+    H -- "{10 Livros}" --> I["Sim"]
+    H -- "{60 Livros}" --> J["Não"]
 </div>
 
 ---
