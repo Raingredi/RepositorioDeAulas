@@ -1,7 +1,7 @@
 use axum::{Json, http::StatusCode};
 use serde::{Deserialize, Serialize};
 use std::{collections::HashMap, env};
-use tokio::{sync::mpsc, time::{sleep, Duration}};
+use tokio::{sync::{mpsc, oneshot}, time::{sleep, Duration}};
 use rand::{Rng, SeedableRng};
 use rand_chacha::ChaCha20Rng;
 use lettre::{
@@ -26,41 +26,79 @@ pub struct MailResponse {
     pub message: String,
 }
 
-static mut TX: Option<mpsc::Sender<MailRequest>> = None;
+struct MailJob {
+    request: MailRequest,
+    response_tx: oneshot::Sender<Result<(), String>>,
+}
+
+static mut TX: Option<mpsc::Sender<MailJob>> = None;
 
 pub async fn send_mail(Json(req): Json<MailRequest>) -> Result<Json<MailResponse>, StatusCode> {
+    let (response_tx, response_rx) = oneshot::channel();
+    
+    let job = MailJob {
+        request: req,
+        response_tx,
+    };
+    
     unsafe {
         if let Some(tx) = &TX {
-            if tx.send(req).await.is_ok() {
+            if tx.send(job).await.is_err() {
                 return Ok(Json(MailResponse {
-                    success: true,
-                    message: "Email enfileirado".to_string(),
+                    success: false,
+                    message: "Erro ao enfileirar email".to_string(),
                 }));
+            }
+            
+            match response_rx.await {
+                Ok(Ok(())) => {
+                    return Ok(Json(MailResponse {
+                        success: true,
+                        message: "Email enviado com sucesso".to_string(),
+                    }));
+                }
+                Ok(Err(err)) => {
+                    return Ok(Json(MailResponse {
+                        success: false,
+                        message: format!("Erro ao enviar email: {}", err),
+                    }));
+                }
+                Err(_) => {
+                    return Ok(Json(MailResponse {
+                        success: false,
+                        message: "Erro interno ao processar email".to_string(),
+                    }));
+                }
             }
         }
     }
+    
     Ok(Json(MailResponse {
         success: false,
-        message: "Erro ao enfileirar email".to_string(),
+        message: "Serviço de email não inicializado".to_string(),
     }))
 }
 
 pub fn init_mailer() {
-    let (tx, rx) = mpsc::channel::<MailRequest>(100);
+    let (tx, rx) = mpsc::channel::<MailJob>(100);
     unsafe { TX = Some(tx); }
     tokio::spawn(mail_worker(rx));
 }
 
-async fn mail_worker(mut rx: mpsc::Receiver<MailRequest>) {
-    // Criar RNG thread-safe
+async fn mail_worker(mut rx: mpsc::Receiver<MailJob>) {
     let mut rng = ChaCha20Rng::from_entropy();
 
-    while let Some(req) = rx.recv().await {
-        if let Err(err) = process_mail(req).await {
-            eprintln!("Erro ao enviar: {err:?}");
-        }
+    while let Some(job) = rx.recv().await {
+        let result = match process_mail(job.request).await {
+            Ok(()) => Ok(()),
+            Err(err) => {
+                eprintln!("Erro ao enviar email: {err:?}");
+                Err(format!("{}", err))
+            }
+        };
+        
+        let _ = job.response_tx.send(result);
 
-        // Gerar delay aleatório entre 1.2s e 2s
         let delay_ms = rng.gen_range(1200..=2000);
         sleep(Duration::from_millis(delay_ms)).await;
     }
