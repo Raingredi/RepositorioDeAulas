@@ -371,7 +371,12 @@
         "caminho": "turmas/visualizacao_dados/aulas/listas_parte02.html",
         "icone": "03",
         "descricao": "Aula sobre Listas Sort, Zip e For"
-      }
+      },
+      "Matplotlib": {
+        "caminho": "turmas/visualizacao_dados/aulas/matplotlib.html",
+        "icone": "04",
+        "descricao": "Aula sobre Matplotlib"
+      } 
     },
     "atividades": [
       {
