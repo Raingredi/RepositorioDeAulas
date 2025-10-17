@@ -269,6 +269,13 @@
           "titulo": "Projeto ENEM: Fase 02",
           "descricao": "Instruções de cada equipe para a Fase 02 do Projeto ENEM",
           "caminho": "turmas/terceirao/atividades/ENEM_Fase02.html"
+        },
+        {
+          "id": "ENEM_TRABALHO_FINAL",
+          "icone": "0-12",
+          "titulo": "Projeto ENEM: Fase Final",
+          "descricao": "Instruções de cada equipe para a Fase final do Projeto ENEM",
+          "caminho": "turmas/terceirao/atividades/trabalho_final_enem.html"
         }
 
       ]
