@@ -15,9 +15,9 @@ services:
 
   nginx:
     image: nginx:alpine
-    container_name: nginx-ssl
+    container_name: nginx
     depends_on:
-      - mailer
+      - rust-server
     ports:
       - "80:80"
       - "443:443"
