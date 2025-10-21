@@ -1,5 +1,5 @@
 services:
-  mailer:
+  rust-server:
     image: rust:1.85-alpine
     container_name: rust-server
     env_file:
@@ -12,8 +12,6 @@ services:
       - "8080"
     networks:
       - web-network
-    restart: unless-stopped
-
 
   nginx:
     image: nginx:alpine
@@ -27,25 +25,25 @@ services:
       - ./conf/nginx.conf:/etc/nginx/nginx.conf:ro
       - ${frontDir}:/usr/share/nginx/html/:ro
       - ${verificationDir}:/usr/share/nginx/certification
-      - ${sslDir}:/etc/letsencrypt:ro
-    restart: unless-stopped
+      - ${sslDir}:/etc/letsencrypt
+    restart: always
     networks:
       - web-network
 
   certbot:
-    image: certbot/certbot:2.8.0
+    image: certbot/certbot:latest
     container_name: certbot-renewer
     volumes:
       - ${verificationDir}:/var/www/certbot
       - ${sslDir}:/etc/letsencrypt
     entrypoint: >
       sh -c "trap exit TERM; while true; do
-             certbot renew --webroot -w /var/www/certbot --deploy-hook 'nginx -s reload' --quiet;
+             certbot renew --webroot -w /var/www/certbot --quiet;
              sleep 12h;
              done"
+    restart: unless-stopped
     networks:
       - web-network
-    restart: unless-stopped
 
 networks:
   web-network:
