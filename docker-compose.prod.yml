@@ -1,0 +1,56 @@
+services:
+  rust-server:
+    image: rust:1.85-alpine
+    container_name: rust-server
+    env_file:
+      - .env
+    volumes:
+      - ${backDir}:/app
+    working_dir: /app
+    command: sh -c "apk add --no-cache musl-dev pkgconfig openssl-dev openssl-libs-static && cargo build --release && ./target/release/rust-app"
+    expose:
+      - "8080"
+    networks:
+      - web-network
+    restart: unless-stopped
+
+
+  nginx:
+    image: nginx:alpine
+    container_name: nginx
+    depends_on:
+      - rust-server
+    ports:
+      - "80:80"
+      - "443:443"
+    volumes:
+      - ./conf/nginx.conf.template:/etc/nginx/nginx.conf.template:ro
+      - ${frontDir}:/usr/share/nginx/html/:ro
+      - ${verificationDir}:/var/www/certbot
+      - ${sslDir}:/etc/letsencrypt
+    command: >
+      sh -c "envsubst '\${SERVER_NAME}' < /etc/nginx/nginx.conf.template > /etc/nginx/nginx.conf && nginx -g 'daemon off;'"
+    restart: unless-stopped
+    networks:
+      - web-network
+
+  certbot:
+    image: certbot/certbot:latest
+    container_name: certbot-renewer
+    env_file:
+      - .env
+    volumes:
+      - ${verificationDir}:/var/www/certbot
+      - ${sslDir}:/etc/letsencrypt
+    entrypoint: >
+      sh -c "trap exit TERM; while true; do
+             certbot renew --webroot -w /var/www/certbot --quiet;
+             sleep 12h;
+             done"
+    restart: unless-stopped
+    networks:
+      - web-network
+
+networks:
+  web-network:
+    driver: bridge
