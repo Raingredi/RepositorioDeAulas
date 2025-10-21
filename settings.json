@@ -61,11 +61,17 @@
           "descricao": "Aula prática sobre conjutos: união e interseção."
         },
 
-        "Probabilidade Condicional Independencia": {
+        "Probabilidade Condicional e Independencia": {
           "caminho": "turmas/estatistica/aulas/Probabilidade_Condicional_Independencia.html",
           "icone": "11",
           "descricao": "Conceitos básicos de probabilidade"
+        },
+        "Probabilidade Condicional em Python": {
+          "caminho": "turmas/estatistica/aulas/probabilidade_python.html",
+          "icone": "12",
+          "descricao": "Conceitos básicos de probabilidade usando python"
         }
+
       },
       "atividades": [
         {
