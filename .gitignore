@@ -28,3 +28,4 @@ build/
 *.tmp
 
 # Keep workflow and code by default; we only ignore secrets and local artifacts
+database/data/
