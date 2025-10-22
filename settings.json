@@ -313,6 +313,26 @@
         "caminho": "turmas/logica/aulas/leis_logica.html",
         "icone": "05",
         "descricao": "Leis da lógica proposicional e suas aplicações na programação"
+      },
+      "Estruturas de Controle": {
+        "caminho": "turmas/logica/aulas/estrutura_controle.html",
+        "icone": "06",
+        "descricao": "Condicionais (if/elif/else) e estruturas de repetição (for, while) com exemplos práticos"
+      },
+      "Compiladores e Interpretadores": {
+        "caminho": "turmas/logica/aulas/interpretador_compilador.html",
+        "icone": "07",
+        "descricao": "Diferenças entre compilação e interpretação, e introdução ao JIT"
+      },
+      "Modularização na Programação": {
+        "caminho": "turmas/logica/aulas/modularizacao.html",
+        "icone": "08",
+        "descricao": "Como dividir código em módulos e funções: alta coesão e baixo acoplamento"
+      },
+      "Vetores e Matrizes": {
+        "caminho": "turmas/logica/aulas/vetores_matrizes.html",
+        "icone": "09",
+        "descricao": "Vetores (listas) e matrizes (arrays 2D): conceitos, exemplos e cuidados"
       }
     },
     "atividades": [
@@ -350,6 +370,14 @@
         "titulo": "Leis da Lógica Proposicional",
         "descricao": "Exercícios para aplicar De Morgan, distributiva, contrapositiva, precedência e simplificação.",
         "caminho": "turmas/logica/atividades/leis_logica.html"
+      }
+      ,
+      {
+        "id": "estrutura_interpretador_compilador_modularizacao_vetores_matrizes",
+        "icone": "06-09",
+        "titulo": "Atividade — Estruturas, Interpretador/Compilador, Modularização e Vetores",
+        "descricao": "Questionário sobre interpretadores/compiladores, estruturas de controle, vetores/matrizes e modularização.",
+        "caminho": "turmas/logica/atividades/estrutura_interpretador_compilador_modularizacao_vetores_matrizes.html"
       }
     ]
   },
