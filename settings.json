@@ -433,6 +433,13 @@
         "titulo": "Laços em Python",
         "descricao": "Exercícios sobre laços e manipulação de dados",
         "caminho": "turmas/visualizacao_dados/atividades/laco_python.html"
+      },
+      {
+        "id": "matplotlib_01",
+        "icone": "04",
+        "titulo": "Matplotlib",
+        "descricao": "Exercícios introdutorios sobre matplotlib",
+        "caminho": "turmas/visualizacao_dados/atividades/matplotlib.html"
       }
     ]
   }
