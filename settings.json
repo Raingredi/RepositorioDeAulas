@@ -410,6 +410,11 @@
         "caminho": "turmas/visualizacao_dados/aulas/matplotlib.html",
         "icone": "04",
         "descricao": "Aula sobre Matplotlib"
+      },
+      "Matplotlib 02": {
+        "caminho": "turmas/visualizacao_dados/aulas/matplotlib02.html",
+        "icone": "05",
+        "descricao": "Aula sobre Matplotlib"
       } 
     },
     "atividades": [
