@@ -41,7 +41,7 @@ A função `plt.legend()` cria uma **legenda**, que funciona como a chave do map
 
 Vamos comparar a temperatura de duas cidades ao longo dos mesmos 5 dias.
 
-[CODE]python
+```python
 import matplotlib.pyplot as plt
 
 dias = [1, 2, 3, 4, 5]
@@ -59,7 +59,7 @@ plt.ylabel('Temperatura (°C)')
 # plt.legend() usa os 'labels' para criar a legenda
 plt.legend()
 plt.show()
-[CODE]
+```
 
 Agora, fica claro qual linha corresponde a cada cidade.
 
@@ -79,7 +79,7 @@ A função `plt.text()` permite que você **escreva um texto diretamente no grá
 
 Vamos destacar a nota mais alta em nosso gráfico de dispersão anterior.
 
-[CODE]python
+```python
 import matplotlib.pyplot as plt
 
 horas_estudo = [1, 2, 3, 4, 5]
@@ -94,7 +94,7 @@ plt.ylabel('Nota no Exame')
 plt.text(5, 9, '  Máximo!') # Adicionamos espaços para afastar o texto do ponto
 
 plt.show()
-[CODE]
+```
 
 A anotação direciona o olhar do leitor para a informação mais relevante.
 
@@ -114,7 +114,7 @@ A função `plt.ylim()` (e `plt.xlim()`) faz exatamente isso: ela **define o int
 
 Vamos focar no desempenho dos alunos que tiraram notas acima de 7.
 
-[CODE]python
+```python
 import matplotlib.pyplot as plt
 
 horas_estudo = [1, 2, 3, 4, 5]
@@ -129,7 +129,7 @@ plt.ylabel('Nota no Exame')
 plt.ylim(7, 10)
 
 plt.show()
-[CODE]
+```
 
 O gráfico agora dá ênfase apenas ao intervalo de notas que nos interessa.
 
@@ -149,7 +149,7 @@ A função `plt.savefig()` permite **salvar seu gráfico como um arquivo de imag
 
 Vamos salvar nosso gráfico de barras de frutas vendidas.
 
-[CODE]python
+```python
 import matplotlib.pyplot as plt
 
 frutas = ['Maçã', 'Banana', 'Laranja']
@@ -165,7 +165,7 @@ plt.ylabel('Quantidade')
 plt.savefig('vendas_frutas.png')
 
 plt.show()
-[CODE]
+```
 
 Após rodar o código, você encontrará um arquivo de imagem pronto para ser usado.
 
