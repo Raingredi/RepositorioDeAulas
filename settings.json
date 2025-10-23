@@ -143,6 +143,13 @@
           "titulo": "Probabilidade Condicional e Independência",
           "descricao": "Exercícios sobre probabilidade condicional e independência",
           "caminho": "turmas/estatistica/atividades/Probabilidade_Condicional_Independencia.html"
+        },
+        {
+          "id": "probabilidade_condicional2",
+          "icone": "10-11",
+          "titulo": "Probabilidade & Python",
+          "descricao": "Exercícios sobre probabilidade condicional e independência usando python",
+          "caminho": "turmas/estatistica/atividades/python_probabilidade.html"
         }
 
       ]
