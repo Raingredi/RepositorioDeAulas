@@ -1,0 +1,33 @@
+# Secrets
+secret.json
+
+# Keys
+id_ed25519
+*.pem
+
+# Node / tooling
+node_modules/
+.vscode/
+.env
+
+# System files
+.DS_Store
+Thumbs.db
+
+# Logs
+*.log
+
+# Build artifacts
+dist/
+build/
+
+# Editor directories
+.idea/
+
+# Ignore GitHub Action temp files if any
+*.tmp
+
+# Keep workflow and code by default; we only ignore secrets and local artifacts
+database/data/
+backend/database/data/
+
