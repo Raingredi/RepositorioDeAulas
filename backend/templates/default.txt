@@ -1,7 +1,0 @@
-Olá,
-
-{{body}}
-
-Atenciosamente,
-Sistema de Email
-
